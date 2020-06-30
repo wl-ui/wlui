@@ -1,2 +1,24 @@
 # wlui
-wl-ui 精美易用的前端复杂组件解决方案。Beautiful and easy-to-use front-end complex component solution
+
+## Project setup
+```
+yarn install
+```
+
+### Compiles and hot-reloads for development
+```
+yarn serve
+```
+
+### Compiles and minifies for production
+```
+yarn build
+```
+
+### Lints and fixes files
+```
+yarn lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

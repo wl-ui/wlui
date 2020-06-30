@@ -1,0 +1,16 @@
+.wl-address {
+  display: flex;
+  justify-content: space-between;
+}
+
+.wl-address .el-select {
+  flex: 0.33;
+}
+
+.wl-address-cascader .el-scrollbar {
+  max-height: 400px;
+}
+
+.wl-address-cascader .el-scrollbar > .el-scrollbar__wrap {
+  overflow-x: hidden;
+}

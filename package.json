@@ -1,0 +1,60 @@
+{
+  "name": "wlui",
+  "version": "0.1.0",
+  "private": false,
+  "author": "weilan<https://github.com/wl-ui>",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lib": "vue-cli-service build --target lib --name wlui --dest lib ./src/pages/index.js",
+    "docserve": "vuepress dev docs",
+    "docbuild": "vuepress build docs",
+    "lint": "vue-cli-service lint"
+  },
+  "main": "lib/wlui.common.js",
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "element-ui": "^2.4.5",
+    "vue": "^2.6.11",
+    "wl-core": "^1.1.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.4.0",
+    "@vue/cli-plugin-eslint": "~4.4.0",
+    "@vue/cli-service": "~4.4.0",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-component": "^1.1.1",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
+    "vue-cli-plugin-element": "~1.0.1",
+    "vue-template-compiler": "^2.6.11",
+    "vuepress": "^1.5.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "bugs": {
+    "url": "https://github.com/wl-ui/wlui/issues"
+  },
+  "homepage": "https://github.com/wl-ui/wlui/#readme",
+  "keywords": "wl-ui gantt file-manager explorer cloud-disk tree-transfer tree-select bim-viewer address 甘特图 文件管理器 云盘 树形穿梭框 树形下拉框 BIM模型浏览 三级地址插件",
+  "license": "MIT"
+}

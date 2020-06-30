@@ -1,0 +1,124 @@
+.wl-tree-select {
+  position: relative;
+  display: inline-block;
+  width: 240px;
+  vertical-align: middle;
+  outline: none;
+
+  .selected-box {
+    display: flex;
+    border: 1px solid #dcdfe6;
+    padding: 0 5px 0 8px;
+    width: 100%;
+    min-height: 36px;
+    line-height: 34px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    &:focus {
+      border-color: #409eff;
+    }
+
+    > .tag-box {
+      display: inline-block;
+      width: calc(100% - 20px);
+      text-align: left;
+    }
+
+    > .icon-box {
+      float: right;
+      display: flex;
+      width: 20px;
+      justify-content: center;
+      align-items: Center;
+      color: #c0c4cc;
+    }
+  }
+
+  .selected-box.size-small {
+    min-height: 32px;
+    line-height: 30px;
+  }
+  .selected-box.size-mini {
+    min-height: 28px;
+    line-height: 26px;
+  }
+  .selected-box.size-default {
+    min-height: 40px;
+    line-height: 38px;
+  }
+
+  .no-wrap {
+    height: 36px;
+    > .tag-box {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .wl-disabled {
+    background: #eee;
+    cursor: no-drop;
+    &:focus {
+      border-color: #dcdfe6;
+    }
+    .el-tag__close {
+      cursor: no-drop;
+    }
+  }
+
+  .wl-select-tag {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-wrap: break-word;
+    word-break: break-all;
+    vertical-align: middle;
+  }
+
+  .wl-select-tag + .wl-select-tag {
+    margin-left: 4px;
+  }
+}
+
+.wl-treeselect-popover {
+  height: 360px;
+  > .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
+}
+
+.wl-options-tree {
+  display: inline-block !important;
+  min-width: 100%;
+
+  .el-tree-node__content {
+    height: 34px;
+    line-height: 34px;
+  }
+}
+
+.wl-placeholder-box {
+  color: #c0c4cc;
+  margin: 0;
+}
+
+// 过度效果
+.fade-in-enter-active,
+.fade-in-leave-active {
+  transition: all 0.4s;
+}
+.fade-in-enter, .fade-in-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.fade-rotate-enter-active,
+.fade-rotate-leave-active {
+  transition: all 0.2s;
+}
+.fade-rotate-enter, .fade-rotate-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  transform: rotateZ(45deg);
+}
