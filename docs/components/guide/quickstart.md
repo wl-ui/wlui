@@ -11,11 +11,11 @@
 ```js
 
 import Vue from 'vue';
-import WlUi from 'wlui';
-import 'wlui/lib/wlui.css';
+import WeilanUi from 'weilan-ui';
+import 'weilan-ui/lib/weilan-ui.css';
 import App from './App.vue';
 
-Vue.use(WlUi);
+Vue.use(WeilanUi);
 
 new Vue({
   el: '#app',
@@ -30,8 +30,9 @@ new Vue({
 
 ```js
 import Vue from 'vue';
-import { WlGantt, WlExplorer } from 'wlui';
 import App from './App.vue';
+import { WlGantt, WlExplorer } from 'weilan-ui';
+import 'weilan-ui/lib/weilan-ui.css';
 
 Vue.use(WlGantt)
 Vue.use(WlExplorer)

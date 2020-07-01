@@ -1,17 +1,17 @@
 {
-  "name": "wlui",
+  "name": "weilan-ui",
   "version": "0.1.0",
   "private": false,
   "author": "weilan<https://github.com/wl-ui>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lib": "vue-cli-service build --target lib --name wlui --dest lib ./src/pages/index.js",
+    "lib": "vue-cli-service build --target lib --name weilan-ui --dest lib ./src/packages/index.js",
     "docserve": "vuepress dev docs",
     "docbuild": "vuepress build docs",
     "lint": "vue-cli-service lint"
   },
-  "main": "lib/wlui.common.js",
+  "main": "lib/weilan-ui.common.js",
   "dependencies": {
     "core-js": "^3.6.5",
     "dayjs": "^1.8.28",

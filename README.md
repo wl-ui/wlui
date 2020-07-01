@@ -12,19 +12,20 @@
 
 ## Install
 ```shell
-npm install wlui -S  
+npm install weilan-ui -S  
 
 # or
 
-yarn add wlui
+yarn add weilan-ui
 ```
 
 ## Quick Start
 ``` js
 import Vue from 'vue'
-import WlUi from 'wlui'
+import WeilanUi from 'weilan-ui'
+import 'weilan-ui/lib/weilan-ui.css';
 
-Vue.use(WlUi)
+Vue.use(WeilanUi)
 
 // or
 
@@ -32,7 +33,8 @@ import {
   WlGantt,
   WlExplorer
   // ...
-} from 'wlui'
+} from 'weilan-ui'
+import 'weilan-ui/lib/weilan-ui.css';
 
 Vue.use(WlGantt)
 Vue.use(WlExplorer)
