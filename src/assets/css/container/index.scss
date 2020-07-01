@@ -1,0 +1,28 @@
+.wl-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding: 8px;
+
+  > .wl-container-scroll {
+    flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    > .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
+  }
+  > .wl-container-main {
+    position: relative;
+    flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow: hidden;
+  }
+}

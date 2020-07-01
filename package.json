@@ -14,9 +14,12 @@
   "main": "lib/wlui.common.js",
   "dependencies": {
     "core-js": "^3.6.5",
+    "dayjs": "^1.8.28",
     "element-ui": "^2.4.5",
     "vue": "^2.6.11",
-    "wl-core": "^1.1.2"
+    "vue-video-player": "^5.0.2",
+    "wl-core": "^1.1.3",
+    "wl-http": "^1.1.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",

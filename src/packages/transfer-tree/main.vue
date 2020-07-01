@@ -785,8 +785,6 @@ export default {
     },
     // 通讯录模式 穿梭操作
     addressListTransfer(type) {
-      // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
-      let keys = this.$refs["from-tree"].getCheckedKeys(true);
       // 选中节点数据
       let arrayCheckedNodes = this.$refs["from-tree"].getCheckedNodes(true);
       // 去重筛选

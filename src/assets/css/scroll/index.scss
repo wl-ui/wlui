@@ -1,0 +1,7 @@
+.wl-scroll {
+  flex: 1;
+  height: 100%;
+  > .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
+}

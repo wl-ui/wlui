@@ -1,6 +1,6 @@
 
 <template>
-  <el-button :type="type" :icon="icon" :size="size" @click="submitAdd()" v-loading="loading">
+  <el-button :type="type" :icon="icon" :size="size" @click="submitAdd()">
     <slot>确 定</slot>
   </el-button>
 </template>
@@ -11,11 +11,6 @@ import { throttle } from "wl-core";
 export default {
   name: "WlAdd",
   props: {
-    // loading管理
-    loading: {
-      type: Boolean,
-      default: false
-    },
     // 类型
     type: {
       type: String,

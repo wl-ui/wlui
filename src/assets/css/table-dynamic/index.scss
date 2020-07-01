@@ -1,0 +1,14 @@
+.wl-table-dynamic {
+  display: flex;
+  flex-direction: column;
+  .check-list {
+    margin-bottom: 15px;
+  }
+  .table-list {
+    flex: 1;
+    height: 100%;
+    th {
+      text-align: center;
+    }
+  }
+}
