@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'wlui中文文档',
+  title: 'weilan-ui文档',
   description: '精美易用的前端复杂组件解决方案 🖖',
   themeConfig: {
     nav: [
@@ -28,7 +28,7 @@ module.exports = {
         {
           title: '复杂组件',
           children: [
-            'complex/elplorer',
+            'complex/explorer',
             'complex/gantt'
           ]
         },
