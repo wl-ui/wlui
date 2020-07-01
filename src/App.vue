@@ -3,7 +3,9 @@
     <!-- 视图组件 -->
     <wl-container>
       <template #header>
-        <img src="./assets/logo.png" />
+        <div class="logo-box">
+          <img class="logo" src="http://wlbase.oss-cn-beijing.aliyuncs.com/wlui-logo.jpg" />
+        </div>
       </template>
       <!-- 基础组件 -->
       <el-row :gutter="20">
@@ -49,11 +51,11 @@
         </el-col>
         <el-col :span="24">
           <h3>BIM模型</h3>
-          <!-- <wl-bim-viewer multiple :docs="bims" class="wl-viewer"></wl-bim-viewer> -->
+          <wl-bim-viewer multiple :docs="bims" class="wl-viewer"></wl-bim-viewer>
         </el-col>
         <el-col :span="24">
           <h3>Gantt甘特图</h3>
-          <!-- <wl-gantt
+          <wl-gantt
             use-real-time
             default-expand-all
             end-date="2019-11-02"
@@ -63,7 +65,7 @@
             @timeChange="timeChange"
             @preChange="preChange"
             @expand-change="expandChange"
-          ></wl-gantt> -->
+          ></wl-gantt>
         </el-col>
         <el-col :span="24">
           <h3>Explorer文件管理器云盘</h3>
@@ -620,6 +622,13 @@ export default {
   color: #2c3e50;
   margin: 25px 0;
   padding: 20px;
+
+  .logo-box {
+    text-align: center;
+    > .logo {
+      width: 240px;
+    }
+  }
 
   .width-240 {
     width: 240px;

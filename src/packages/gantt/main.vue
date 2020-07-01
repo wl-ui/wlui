@@ -486,12 +486,12 @@ export default {
         );
         if (mouth_diff > 12) {
           // 12个月以上的分到yearAndMouth
-          this.self_date_type = "yearAndMonth";
+          this.setDataType("yearAndMonth");
         } else if (mouth_diff > 2) {
           // 2个月以上的分到yearAndWeek
-          this.self_date_type = "yearAndWeek";
+          this.setDataType("yearAndWeek");
         } else {
-          this.self_date_type = "monthAndDay";
+          this.setDataType("monthAndDay");
         }
       }
       // 不自动更新日期类型，以dateType固定展示
@@ -522,7 +522,7 @@ export default {
     selfData() {
       let _data = this.data || [];
       // 生成一维数据
-      this.self_data_list = flattenDeep(_data, this.selfProps.children);
+      this.setListData();
       // 处理源数据合法性
       this.handleData(_data);
       // 处理前置依赖
@@ -559,18 +559,15 @@ export default {
       return "";
     }
   },
-  watch: {
-    dateType(val) {
-      this.self_date_type = val;
-    },
-    startDate(val) {
-      this.self_start_date = val;
-    },
-    endDate(val) {
-      this.self_end_date = val;
-    }
-  },
   methods: {
+    // 设置dateType
+    setDataType(type) {
+      this.self_date_type = type;
+    },
+    // 生成一维数据
+    setListData() {
+      this.self_data_list = flattenDeep(this.data, this.selfProps.children);
+    },
     /**
      * 开始时间改变
      * row: object 当前行数据
@@ -1714,6 +1711,7 @@ export default {
       );
     }
   },
+
   created() {
     this.self_date_type = this.dateType;
     this.self_start_date = this.startDate;

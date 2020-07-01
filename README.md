@@ -47,6 +47,6 @@ Vue.use(WlExplorer)
 
 ## 社区
 
-| Issue                                               | QQ群                                                                       |
-|-----------------------------------------------------|----------------------------------------------------------------------------|
+| Issue | QQ群 |
+|---|---|
 | [wlui/issues](https://github.com/wl-ui/wlui/issues) | <img src="http://wlbase.oss-cn-beijing.aliyuncs.com/qq.jpg" width="200" /> |
