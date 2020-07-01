@@ -1,7 +1,7 @@
 # wlui
 
 <p align="center">
-  <img src="http://wlbase.oss-cn-beijing.aliyuncs.com/wlui-logo.jpg">
+  <img src="http://wlbase.oss-cn-beijing.aliyuncs.com/wlui-logo.jpg" width="120">
 </p>
 
 <p align="center">
@@ -41,12 +41,12 @@ Vue.use(WlExplorer)
 ## Donation
 如果你有心，可以请作者喝杯咖啡
 <p>
-  <img width="360" src="http://wlbase.oss-cn-beijing.aliyuncs.com/apply.jpg">
-  <img width="360" src="http://wlbase.oss-cn-beijing.aliyuncs.com/wx.jpg">
+  <img width="220" src="http://wlbase.oss-cn-beijing.aliyuncs.com/apply.jpg">
+  <img width="220" src="http://wlbase.oss-cn-beijing.aliyuncs.com/wx.jpg">
 </p>
 
 ## 社区
 
-| Issue | QQ群 |
-| --- | --- | 
-| [wlui/issues](https://github.com/wl-ui/wlui/issues) | <img src="http://wlbase.oss-cn-beijing.aliyuncs.com/qq.jpg" width="150" /> |
+| Issue                                               | QQ群                                                                       |
+|-----------------------------------------------------|----------------------------------------------------------------------------|
+| [wlui/issues](https://github.com/wl-ui/wlui/issues) | <img src="http://wlbase.oss-cn-beijing.aliyuncs.com/qq.jpg" width="220" /> |
