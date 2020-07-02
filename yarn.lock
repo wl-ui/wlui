@@ -3524,7 +3524,7 @@ electron-to-chromium@^1.3.483:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.483.tgz#9269e7cfc1c8e72709824da171cbe47ca5e3ca9e"
   integrity sha512-+05RF8S9rk8S0G8eBCqBRBaRq7+UN3lDs2DAvnG8SBSgQO3hjy0+qt4CmRk5eiuGbTcaicgXfPmBi31a+BD3lg==
 
-element-ui@^2.13.2, element-ui@^2.4.5:
+element-ui@^2.13.2:
   version "2.13.2"
   resolved "https://registry.yarnpkg.com/element-ui/-/element-ui-2.13.2.tgz#582bf47aaaaaafe23ea1958fae217a687ad06447"
   integrity sha512-r761DRPssMPKDiJZWFlG+4e4vr0cRG/atKr3Eqr8Xi0tQMNbtmYU1QXvFnKiFPFFGkgJ6zS6ASkG+sellcoHlQ==
@@ -9565,14 +9565,14 @@ webwackify@0.1.6:
   resolved "https://registry.yarnpkg.com/webwackify/-/webwackify-0.1.6.tgz#1d42a12ac61823d7e345abde084eaaa62a4a95eb"
   integrity sha512-pGcw1T3HpNnM/UTRQqqRkkkzythSLts05mB+7Gr00B+0VbL0m39dFL5g20rSIEUt9Wrpw+/8k+snxRlUFHhcqA==
 
-weilan-ui@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/weilan-ui/-/weilan-ui-0.1.0.tgz#fb5dfb39100a952224c8a7d65e30760f6400da3a"
-  integrity sha512-aYG9iO/NIbp6qCiH9AefKalHQUSEYOLyVXAR6pXTTbbgVP9IIULtqGjpsHNk3G5/ULDn9rWJBXVV2e0BTuGnhA==
+weilan-ui@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/weilan-ui/-/weilan-ui-0.1.2.tgz#abea3b43be934af8be9f3448f9539b390b3d7872"
+  integrity sha512-BiRZ9300TiM9tlRM9GUlzRIIyBQdypRVrCShhI/mqwd/3AVp1OK5oSY2yMFb8MzldP62R//1hrFH16ibblNmDQ==
   dependencies:
     core-js "^3.6.5"
     dayjs "^1.8.28"
-    element-ui "^2.4.5"
+    element-ui "^2.13.2"
     vue "^2.6.11"
     vue-video-player "^5.0.2"
     wl-core "^1.1.3"
