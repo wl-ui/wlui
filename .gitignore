@@ -1,6 +1,10 @@
 .DS_Store
 node_modules
 /dist
+dics
+mock
+public
+src
 
 # local env files
 .env.local

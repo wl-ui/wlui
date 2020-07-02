@@ -1,5 +1,6 @@
 import Vue from "vue";
 import ElementUi from "./element"
-import WlUi from "./wlui"
-
-ElementUi.concat(WlUi).forEach(i => Vue.use(i))
+import WeilanUi from "./wlui"
+/* import WeilanUi from "weilan-ui"
+import "weilan-ui/lib/weilan-ui.css" */
+ElementUi.concat(WeilanUi).forEach(i => Vue.use(i))
