@@ -1,6 +1,11 @@
 module.exports = {
-  title: 'weilan-ui文档',
-  description: '精美易用的前端复杂组件解决方案 🖖',
+  locales: {
+    '/': {
+      lang: 'zh-CN',
+      title: 'weilan-ui文档',
+      description: '精美易用的前端复杂组件解决方案 🖖',
+    }
+  },
   themeConfig: {
     nav: [
       { text: '主页', link: '/' },
@@ -18,20 +23,20 @@ module.exports = {
           ]
         },
         {
-          title: '基础组件',
-          children: [
-            'base/select',
-            'base/select-tree',
-            'base/address'
-          ]
-        },
-        {
           title: '复杂组件',
           children: [
             'complex/explorer',
             'complex/gantt'
           ]
         },
+        {
+          title: '基础组件',
+          children: [
+            'base/select',
+            'base/select-tree',
+            'base/address'
+          ]
+        }
       ],
       '/aiticle/': [
         {
@@ -42,5 +47,13 @@ module.exports = {
         },
       ]
     }
-  }
+  },
+  plugins: [
+    [
+      require('../src'),
+      {
+        component: 'DemoBlock'
+      }
+    ]
+  ],
 }
