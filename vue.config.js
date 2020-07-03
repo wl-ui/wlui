@@ -9,11 +9,11 @@ module.exports = {
     }
   },
   productionSourceMap: false,
-  css: {
+  /* css: {
     loaderOptions: {
       sass: {
         prependData: `@import "./src/assets/css/variables.scss";`
       }
     }
-  }
+  } */
 };
