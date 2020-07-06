@@ -1,5 +1,6 @@
 <template>
   <el-select
+    class="wl-select"
     ref="wl-vue-select"
     :value="value"
     :size="size"
@@ -46,10 +47,9 @@
  * emit:输出
  */
 export default {
-  name: "WlSelect",
+  name: "wl-select",
   data() {
     return {
-      // value: "", // 当前选中值
       empty: "00000000-0000-0000-0000-000000000000" // 全部时的空id
     };
   },
@@ -72,11 +72,6 @@ export default {
       type: Number,
       default: 1
     },
-    // 是否默认选中，如果开启有全部时选中全部，无全部时选中第一个。(开启此功能请不要给v-model赋初始值)
-    defaultSelect: {
-      type: Boolean,
-      default: false
-    },
     // v-model绑定值
     value: [String, Array, Object],
     // value-key 作为 value 唯一标识的键名，如传则认为绑定值为对象
@@ -86,37 +81,34 @@ export default {
       type: Boolean,
       default: false
     },
+    // 是否禁用
     disabled: {
-      // 是否禁用
       type: Boolean,
       default: false
     },
-    size: {
-      type: String,
-      default: "medium"
-    }, // 输入框尺寸medium/small/mini
+    size: String, // 输入框尺寸medium/small/mini
+    // 是否可以清空选项
     clearable: {
-      // 是否可以清空选项
       type: Boolean,
       default: false
     },
+    // 多选时用户最多可以选择的项目数，为 0 则不限制
     multipleLimit: {
-      // 多选时用户最多可以选择的项目数，为 0 则不限制
       type: Number,
       default: 0
     },
+    // 占位符
     placeholder: {
-      // 占位符
       type: String,
       default: "请选择"
     },
+    // 是否可搜索
     filterable: {
-      // 是否可搜索
       type: Boolean,
       default: false
     },
+    // 是否允许用户创建新条目，需配合 filterable 使用
     allowCreate: {
-      // 是否允许用户创建新条目，需配合 filterable 使用
       type: Boolean,
       default: false
     },
@@ -162,22 +154,22 @@ export default {
             : val.filter(item => item !== this.empty);
         }
       }
-      /* let _all_item = this.valueKey
-        ? val.find(item => item[this.selfProps.value] === this.empty)
-        : val.find(item => item === this.empty);
-      let _data = _all_item
-        ? [_all_item]
-        : val.length !== this.data.length
-        ? val
-        : this.valueKey
-        ? [
-            {
-              [this.selfProps.value]: this.empty,
-              [this.selfProps.label]: "全部"
-            }
-          ]
-        : [this.empty]; */
       this.$emit("change", _data);
+    },
+    // 处理默认选中全部的状态
+    whenDefaultCheckedAll(val) {
+      if (this.selfData.length === 0) return;
+      if (val.length === this.selfData.length) {
+        let _data = this.valueKey
+          ? [
+              {
+                [this.selfProps.value]: this.empty,
+                [this.selfProps.label]: "全部"
+              }
+            ]
+          : [this.empty];
+        this.$emit("change", _data);
+      }
     }
   },
   computed: {
@@ -192,24 +184,12 @@ export default {
   },
   watch: {
     // 处理默认选中
-    selfData(val) {
-      if (!this.defaultSelect || val.length === 0) return;
-      if (!this.multiple) {
-        this.$emit("change", val[0]);
-      } else {
-        let select_item =
-          val.length > this.showTotal
-            ? {
-                [this.selfProps.value]: this.empty,
-                [this.selfProps.label]: "全部"
-              }
-            : val[0];
-        let _data = !this.valueKey
-          ? select_item[this.selfProps.value]
-          : select_item;
-        this.$emit("change", [_data]);
-      }
+    value(val) {
+      this.whenDefaultCheckedAll(val);
     }
+  },
+  created() {
+    this.whenDefaultCheckedAll(this.value);
   }
 };
 </script>
