@@ -12,7 +12,7 @@
   padding: 0 5px 0 8px;
   width: 100%;
   min-height: 36px;
-  line-height: 34px;
+  line-height: 32px;
   box-sizing: border-box;
   border-radius: 4px;
   cursor: pointer;
@@ -40,17 +40,17 @@
 
 .wl-tree-select .selected-box.size-small {
   min-height: 32px;
-  line-height: 30px;
+  line-height: 28px;
 }
 
 .wl-tree-select .selected-box.size-mini {
   min-height: 28px;
-  line-height: 26px;
+  line-height: 24px;
 }
 
 .wl-tree-select .selected-box.size-default {
   min-height: 40px;
-  line-height: 38px;
+  line-height: 36px;
 }
 
 .wl-tree-select .no-wrap {

@@ -91,6 +91,8 @@
  * emit:
  * selected -> 选中数据
  */
+import { DataType } from "wl-core";
+
 export default {
   name: "WlSelectTree",
   data() {
@@ -243,16 +245,17 @@ export default {
       }
       // 多选处理
       if (this.checkbox) {
-        this.checked_keys =
-          typeof val[0] === "object" ? val.map(i => i[this.nodeKey]) : val;
+        this.checked_keys = DataType.isObject(val[0])
+          ? val.map(i => i[this.nodeKey])
+          : val;
         this.$nextTick(() => {
           this.selecteds = this.$refs["tree-select"].getCheckedNodes(this.leaf);
         });
         return;
       }
       // 单选处理
-      if (typeof val === "object") {
-        let _val = Array.isArray(val) ? val[0] : val;
+      let _val = Array.isArray(val) ? val[0] : val;
+      if (DataType.isObject(_val)) {
         this.selecteds = [_val];
         this.$nextTick(() => {
           this.$refs["tree-select"].setCurrentNode(_val);

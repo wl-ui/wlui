@@ -120,3 +120,7 @@ export default {
   {name:'no-checked-close', des:'点击tag标签清空已选时，可选项列表将同时关闭', type: 'Boolean', optionValues:'-', defaultValue:'false'},
   {name:'-', des:'其他el-select属性', type: '-', optionValues:'-', defaultValue:'-'}
 ]"></common-api>
+
+<common-api type="events" :data="[
+  {name:'change', des:'数据值改变', params: '目前的选中值'}
+]"></common-api>
