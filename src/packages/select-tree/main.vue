@@ -256,13 +256,14 @@ export default {
       // 单选处理
       let _val = Array.isArray(val) ? val[0] : val;
       if (DataType.isObject(_val)) {
+        console.log(1)
         this.selecteds = [_val];
         this.$nextTick(() => {
           this.$refs["tree-select"].setCurrentNode(_val);
         });
       } else {
         this.$nextTick(() => {
-          this.$refs["tree-select"].setCurrentKey(val);
+          this.$refs["tree-select"].setCurrentKey(_val);
           let _node = this.$refs["tree-select"].getCurrentNode();
           this.selecteds = _node ? [_node] : [];
         });

@@ -1,0 +1,46 @@
+.wl-tree {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 260px;
+  padding: 10px;
+  box-sizing: border-box;
+
+  .el-tree {
+    background: transparent;
+    color: $body-color;
+  }
+  .el-tree-node__content {
+    height: 36px;
+    line-height: 36px;
+  }
+
+  .wl-tree-node {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 24px);
+    .tree-label-box {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: calc(100% - 66px);
+    }
+    &:hover .tree-icon-box {
+      display: flex;
+      width: 66px;
+    }
+  }
+
+  .tree-icon-box {
+    display: none;
+    justify-content: space-between;
+    padding-right: 6px;
+    width: 66px;
+    transition: all 0.3s;
+  }
+
+  .handle-tree-icon {
+    line-height: 36px;
+    font-size: 16px;
+  }
+}
