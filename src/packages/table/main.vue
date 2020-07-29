@@ -1,436 +1,263 @@
 <template>
-  <el-table
-    id="table"
-    fit
-    stripe
-    class="wl-table vtable"
-    ref="wl-table"
-    size="mini"
-    :data="virtualRows"
-    :height="height"
-    :span-method="spanMethod"
-    :sum-text="sumText"
-    :show-summary="showSummary"
-    :row-class-name="rowClassName"
-    :summary-method="summaryMethod"
-    :cell-class-name="cellClassName"
-    :highlight-current-row="highlightCurrentRow"
-    :header-row-class-name="selfHeaderRowClassName"
-    :load="load"
-    :lazy="lazy"
-    :row-key="rowKey"
-    :tree-props="treeProps"
-    :default-expand-all="defaultExpandAll"
-    @selection-change="selectionChange"
-    @row-dblclick="rowdblClick"
-    @row-click="handleRowClick"
-    @select="select"
-    @expand-change="calcBottom"
-    :row-style="rowStyle"
-    :cell-style="cellStyle"
-  >
-    <!-- 选择框CheckBox列 -->
-    <el-table-column
-      v-if="hasCheck"
-      align="center"
-      type="selection"
-      width="50"
-      :selectable="selectable"
-    ></el-table-column>
-    <!-- 序号index列 -->
-    <el-table-column
-      v-if="hasIndex"
-      label="序号"
-      align="center"
-      type="index"
-      width="50"
-      :show-overflow-tooltip="true"
-    ></el-table-column>
-    <!-- 列配置 -->
-    <template v-for="column in columns">
+  <div class="wl-table">
+    <el-table
+      v-if="screenHeight"
+      class="wl-table-main"
+      ref="wl-table"
+      :fit="fit"
+      :lazy="lazy"
+      :load="load"
+      :stripe="stripe"
+      :row-key="rowKey"
+      :data="visualTable"
+      :sum-text="sumText"
+      :row-style="rowStyle"
+      :height="screenHeight"
+      :tree-props="treeProps"
+      :cell-style="cellStyle"
+      :span-method="spanMethod"
+      :show-summary="showSummary"
+      :row-class-name="rowClassName"
+      :summary-method="summaryMethod"
+      :cell-class-name="cellClassName"
+      :default-expand-all="defaultExpandAll"
+      :header-row-class-name="headerRowClassName"
+      :highlight-current-row="highlightCurrentRow"
+      @selection-change="selectionChange"
+      @row-dblclick="handleRowDblClick"
+      @row-click="handleRowClick"
+      @select="select"
+    >
       <el-table-column
-        v-if="column.slot"
-        :key="column.prop"
-        :type="column.type"
-        :column-key="column.columnKey"
-        :label="column.label"
-        :prop="column.prop"
-        :width="column.width"
-        :min-width="column.minWidth"
-        :fixed="column.fixed"
-        :render-header="column.renderHeader"
-        :sortable="column.sortable"
-        :sort-method="column.sortMethod"
-        :sort-by="column.sortBy"
-        :sort-orders="column.sortOrders"
-        :resizable="column.resizable"
-        :formatter="column.formatter"
-        :show-overflow-tooltip="column.showOverflowTooltip"
-        :align="column.align"
-        :header-align="column.headerAlign"
-        :class-name="column.className"
-        :label-class-name="column.labelClassName"
-        :selectable="column.selectable"
-        :reserve-selection="column.reserveSelection"
-        :filters="column.filters"
-        :filter-placement="column.filterPlacement"
-        :filter-multiple="column.filterMultiple"
-        :filter-method="column.filterMethod"
-        :filtered-value="column.filteredValue"
+        v-for="item of columns"
+        :key="item.prop"
+        :prop="item.prop"
+        :width="item.width"
+        :label="item.label"
+        :filters="item.filters"
+        :sortable="item.sortable"
+        :resizable="item.resizable"
+        :class-name="item.className"
+        :selectable="item.selectable"
+        :sort-method="item.sortMethod"
+        :render-header="item.renderHeader"
+        :filtered-value="item.filteredValue"
+        :filter-multiple="item.filterMultiple"
+        :reserve-selection="item.reserveSelection"
+        :show-overflow-tooltip="item.showOverflowTooltip"
+        :filter-placement="item.filterPlacement"
+        :label-class-name="item.labelClassName"
+        :filter-method="item.filterMethod"
+        :header-align="item.headerAlign"
+        :sort-orders="item.sortOrders"
+        :column-key="item.columnKey"
+        :formatter="item.formatter"
+        :min-width="item.minWidth"
+        :sort-by="item.sortBy"
+        :align="item.align"
+        :fixed="item.fixed"
+        :type="item.type"
       >
         <template slot-scope="scope">
-          <slot :name="column.prop" :row="scope.row" :index="scope.$index"></slot>
+          <template v-if="!item.slot">
+            {{item.formatter
+            ? item.formatter(scope.row, scope.column, scope.row[item.prop],scope.$index)
+            : scope.row[item.prop]}}
+          </template>
+          <template v-else>
+            <slot :name="item.prop" :row="scope.row" :index="scope.$index"></slot>
+          </template>
         </template>
       </el-table-column>
-      <el-table-column
-        v-else
-        :key="column.prop"
-        :column-key="column.columnKey"
-        :label="column.label"
-        :prop="column.prop"
-        :width="column.width"
-        :min-width="column.minWidth"
-        :fixed="column.fixed"
-        :render-header="column.renderHeader"
-        :sortable="column.sortable"
-        :sort-method="column.sortMethod"
-        :sort-by="column.sortBy"
-        :sort-orders="column.sortOrders"
-        :resizable="column.resizable"
-        :formatter="column.formatter"
-        :show-overflow-tooltip="column.showOverflowTooltip"
-        :align="column.align || 'center'"
-        :header-align="column.headerAlign"
-        :class-name="column.className"
-        :label-class-name="column.labelClassName"
-        :selectable="column.selectable"
-        :reserve-selection="column.reserveSelection"
-        :filters="column.filters"
-        :filter-placement="column.filterPlacement"
-        :filter-multiple="column.filterMultiple"
-        :filter-method="column.filterMethod"
-        :filtered-value="column.filteredValue"
-      ></el-table-column>
-    </template>
-  </el-table>
+    </el-table>
+  </div>
 </template>
 
 <script>
-import { debounce, DataType } from "wl-core";
+import { throttle } from "wl-core";
 
 export default {
   name: "WlTable",
   props: {
-    rowHeight: {
+    columns: Array, // 表头 --------------------------------vtable属性开始-----------------------------
+    data: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    }, // 表格数据
+    itemSize: {
       type: Number,
-      default: 65
-    },
+      default: 48,
+    }, // 每一行高度
+    throttleTime: {
+      type: Number,
+      default: 60,
+    }, // 节流毫秒数
+    bufferScale: {
+      type: Number,
+      default: 0.5,
+    }, // 缓冲区比例
+    vTable: {
+      type: Boolean,
+      default: true,
+    }, // 是否开启虚拟列表 -----------------------------------vtable属性结束----------------------------
     defaultExpandAll: {
       //是否展开
       type: Boolean,
-      default: function() {
+      default: function () {
         return false;
-      }
-    },
-    //表格数据
-    data: {
-      type: Array,
-      default: function() {
-        return [];
-      }
-    },
-    /* 表格额外的列配置数据:
-        fixed | 'left','true','right' | 列是否固定,默认值:'';
-        prop | 数据对象中的属性;
-        label | 表头文字;
-        align | 'left', 'center', 'right' | 对齐方式,默认值:'left';
-        width | 列宽;
-        minWidth | 列最小宽度;
-        sortable | true, false | 是否排序,默认值:false;
-        formatter | Function | 格式化函数;
-        showOverflowTooltip | true,false | 内容溢出是,用...表示,默认值:true;
-        className | 列的样式类名;
-        */
-    columns: {
-      type: Array,
-      default: function() {
-        return [];
-      }
-    },
-    //行的 className 的回调方法
-    rowClassName: {
-      type: Function,
-      default: null
-    },
-    //单元格的 className 的回调方法
-    cellClassName: {
-      type: Function,
-      default: null
-    },
-    // 表头行class
-    headerRowClassName: String,
-    //当前行是否高亮
+      },
+    }, // 是否展开全部 --------------------------------------el-table属性开始 --------------------------
+    rowClassName: Function, // 行的 className 的回调方法
+    cellClassName: Function, // 单元格的 className 的回调方法
+    headerRowClassName: String, // 表头行class
     highlightCurrentRow: {
       type: Boolean,
-      default: false
-    },
-    //是否显示复选框
-    hasCheck: {
-      type: Boolean,
-      default: false
-    },
-    // 多选时，是否可以点击行快速选中复选框
+      default: true,
+    }, // 当前行是否高亮
     quickCheck: {
       type: Boolean,
-      default: false
-    },
-    //是否显示序号
-    hasIndex: {
-      type: Boolean,
-      default: true
-    },
-    // 行数据的 Key，用来优化 Table 的渲染
+      default: false,
+    }, // 多选时，是否可以点击行快速选中复选框
     rowKey: {
       type: String,
-      default: "id"
-    },
-    //是否在表尾显示合计行
+      default: "id",
+    }, // 行数据的 Key，用来优化 Table 的渲染
     showSummary: {
       type: Boolean,
-      default: false
-    },
-    //合计行第一列的文本
+      default: false,
+    }, // 是否在表尾显示合计行
     sumText: {
       type: String,
-      default: "合计"
-    },
-    //自定义的合计计算方法
-    summaryMethod: {
-      type: Function,
-      default: null
-    },
-    //行单击事件
-    rowClick: {
-      type: Function,
-      default: function() {}
-    },
-    //行双击事件
-    rowdblClick: {
-      type: Function,
-      default: function() {}
-    },
-    // 是否懒加载子节点数据
+      default: "合计",
+    }, // 合计行第一列的文本
+    summaryMethod: Function, // 自定义的合计计算方法
+    spanMethod: Function, // 自定义的合计计算方法
+    rowClick: Function, // 行单击事件
+    rowdblClick: Function, // 行双击事件
     lazy: {
-      type: Boolean
-    },
-    // 加载子节点数据的函数，lazy 为 true 时生效
-    load: {
-      type: Function
-    },
-    //表格的高度
-    height: [Number, String],
-    //是否分页
-    pagination: {
       type: Boolean,
-      default: true
-    },
-    //表格数据总条数
-    total: {
-      type: Number,
-      default: 0
-    },
-    //当前页数
-    pageNum: {
-      type: Number,
-      default: 1
-    },
-    //每页显示几条数据
-    pageSize: {
-      type: Number,
-      default: function() {
-        return this.PAGESIZE;
-      }
-    },
-    pageSizes: Array,
-    //自定义的某行是否可以勾选
-    selectable: {
-      type: Function,
-      default: null
-    },
-    rowStyle: {
-      type: Function,
-      default: null
-    },
-    cellStyle: {
-      type: Function,
-      default: null
-    },
-    spanMethod: {
-      type: Function,
-      default: null
-    },
-    treeProps: {
-      type: Object,
-      default: function() {
-        return {};
-      }
-    },
-    // 多选时默认选中行
-    defaultChecked: [Array, Object]
+      default: false,
+    }, // 是否懒加载子节点数据
+    load: Function, // 加载子节点数据的函数，lazy 为 true 时生效
+    selectable: Function, // 自定义的某行是否可以勾选
+    rowStyle: Function, // 自定义行样式
+    cellStyle: Function, // 自定义单元格样式
+    treeProps: Object, // 数表配置项
+    defaultChecked: [Array, Object], // 多选时默认选中行
+    fit: {
+      type: Boolean,
+      default: true,
+    }, // 列的宽度是否自撑开
+    stripe: {
+      type: Boolean,
+      default: false,
+    }, // 是否为斑马纹
   },
   data() {
     return {
-      positionType: true,
-      startIndex: 0,
-      viewRows: [],
-      virtualRows: [],
-      scrollTop: 0,
-      currentExpend: ["1"],
-      temppath: null,
-      realPath: null,
-      selectionList: [] // 多选选中数据
+      start: 0, // 开始索引
+      end: null, // 结束索引
+      screenHeight: 0, // 可视区高度
+      tableScreenHeight: 0, // 表格可视区高度
+      offset: 0, // 偏移量
+      tableBodyDom: null, // 表格body
+      selectionList: [], // 选中行数据
     };
   },
   computed: {
-    selfHeaderRowClassName() {
-      return `ft-thead ${this.headerRowClassName || ""}`;
-    }
-  },
-  watch: {
-    data(val) {
-      this.setIndex(val);
+    // 总数据长度
+    tableAllLength() {
+      return this.data.length;
     },
-    scrollTop(top) {
-      this.calcList(top);
-    }
-  },
-  created() {
-    this.setDefaultCheck(this.defaultChecked);
+    // 列表总高度
+    tableHeight() {
+      return this.tableAllLength * this.itemSize;
+    },
+    // 可视项数量
+    visualItemNumber() {
+      return Math.ceil(this.tableScreenHeight / this.itemSize);
+    },
+    // 可视区上方缓冲数量
+    aboveItemNumber() {
+      return Math.min(this.start, this.bufferScale * this.visualItemNumber);
+    },
+    // 可视区下放缓冲数量
+    belowItemNumber() {
+      return Math.min(
+        this.tableAllLength - this.end,
+        this.bufferScale * this.visualItemNumber
+      );
+    },
+    // 可视项
+    visualTable() {
+      let start = this.start - this.aboveItemNumber;
+      let end = this.end + this.belowItemNumber;
+      return this.data.slice(start, end);
+    },
   },
   mounted() {
-    this.setIndex(this.data);
-    this.calcList();
+    if (!this.vTable) return;
+    // 获取插件dom高度
+    this.screenHeight = this.$el.clientHeight;
+    // 设置虚拟列表起点索引
+    this.start = 0;
     this.$nextTick(() => {
-      this.debounceFn = debounce(() => {
-        this.scrollTop = this.$refs["wl-table"].bodyWrapper.scrollTop;
-      }, 100);
+      // 获取表头高度
+      const tableHader = this.$refs["wl-table"].$el.getElementsByClassName(
+        "el-table__header-wrapper"
+      )[0];
+      const tableHaderHeight = tableHader.clientHeight;
+      // 获取 tableBody 被分配的高度
+      this.tableScreenHeight = this.screenHeight - tableHaderHeight;
+      // 设置虚拟列表终点索引
+      this.end = this.start + this.visualItemNumber;
+      // 获取滚动区dom
+      this.tableBodyDom = this.$refs["wl-table"].$el.getElementsByClassName(
+        "el-table__body"
+      )[0];
+      // 设定滚动区padding撑起虚拟列表高
+      this.tableBodyDom.style.paddingTop = 0;
+      this.tableBodyDom.style.paddingBottom =
+        this.tableHeight - this.visualItemNumber * this.itemSize + "px";
+      // 注册滚动监听
+      this.debounceFn = throttle((e) => {
+        this.scrollEvent(e);
+      }, this.throttleTime);
       this.$refs["wl-table"].bodyWrapper.addEventListener(
         "scroll",
         this.debounceFn
       );
     });
   },
+  destroyed() {
+    // 销毁滚动监听
+    this.$refs["wl-table"].bodyWrapper.removeEventListener(
+      "scroll",
+      this.debounceFn,
+      true
+    );
+  },
   methods: {
-    setIndex(data) {
-      let queue = [...data];
-      let loop = 0;
-      this.num = 0;
-      while (queue.length > 0) {
-        loop++;
-        [...queue].forEach((child, i) => {
-          queue.shift();
-          this.num++;
-          if (loop == 1) {
-            child.customIndex = i + 1 + "";
-            child.currentIndex = i;
-            child.path = i;
-          }
-          if (child.children && child.children.length > 0) {
-            child.dataType = 1;
-            for (let ci = 0; ci < child.children.length; ci++) {
-              child.children[ci].currentIndex = ci;
-              child.children[ci].customIndex =
-                child.customIndex + "." + (ci + 1);
-              child.children[ci].path = child.path + ".children." + ci;
-            }
-            queue.push(...child.children);
-          } else {
-            child.dataType = 2;
-          }
-          child.expend = child.expend || true;
-        });
+    // vtable滚动监听函数
+    scrollEvent(e) {
+      let scrollTop = e.target.scrollTop;
+      //此时的开始索引
+      this.start = Math.floor(scrollTop / this.itemSize);
+      //此时的结束索引
+      this.end = this.start + this.visualItemNumber;
+      if (this.end >= this.tableAllLength) {
+        this.tableBodyDom.style.paddingTop = scrollTop + "px";
+        this.tableBodyDom.style.paddingBottom = "0";
+        return;
       }
-      this.$nextTick(() => {
-        this.calcList();
-      });
-    },
-    getPathByKey(value, key, arr) {
-      this.temppath = [];
-      this.realPath = "";
-      try {
-        for (let i = 0; i < arr.length; i++) {
-          this.getNodePath(arr[i], value, key);
-        }
-      } catch (e) {
-        return this.realPath;
-      }
-    },
-    getNodePath(node, value, key) {
-      this.temppath.push(node.currentIndex);
-      //找到符合条件的节点，通过throw终止掉递归
-      if (node[key] === value) {
-        this.temppath.forEach((v, i) => {
-          if (i == 0) {
-            this.realPath += "." + v;
-          } else {
-            this.realPath += `.children.${v}`;
-          }
-        });
-        // temppath = temppath.join(",")
-        throw "GOT IT!";
-        // return;
-      }
-      if (node.children && node.children.length > 0) {
-        for (var i = 0; i < node.children.length; i++) {
-          this.getNodePath(node.children[i], value, key);
-        }
-
-        //当前节点的子节点遍历完依旧没找到，则删除路径中的该节点
-        this.temppath.pop();
-      } else {
-        //找到叶子节点时，删除路径当中的该叶子节点
-        this.temppath.pop();
-      }
-    },
-    calcBottom() {
-      this.$nextTick(() => {
-        let obj = this.$refs["wl-table"].$el;
-        var top = obj.getBoundingClientRect().top; //元素顶知端到可见区域道顶端的距离专
-        var bottom = obj.getBoundingClientRect().bottom; //元素顶知端到可见区域道顶端的距离专
-        var se = document.documentElement.clientHeight; //浏览器可见区域高度。属
-        if (top <= se - 50 && bottom >= se) {
-          this.positionType = false; //fix
-        } else {
-          this.positionType = true;
-        }
-      });
-    },
-    calcList(scrollTop = this.scrollTop) {
-      console.time("js 运行时间：");
-
-      this.startIndex = Math.floor(scrollTop / this.rowHeight);
-      console.log(this.startIndex)
-      this.virtualRows = this.data.slice(this.startIndex, this.startIndex + 10);
-      console.log(this.virtualRows )
-      let height = this.num * this.rowHeight;
-      let mainTable = this.$refs["wl-table"].$el.getElementsByClassName(
-        "el-table__body"
-      );
-
-      Array.from(mainTable).forEach(v => {
-        v.style.height = height + "px";
-        if (this.startIndex + 10 >= this.num) {
-          v.style.paddingTop = scrollTop - this.rowHeight + "px";
-          v.style.paddingBottom = 0;
-        } else {
-          v.style.paddingTop = scrollTop + "px";
-          v.style.paddingBottom =
-            height - 10 * this.rowHeight - scrollTop + "px";
-        }
-      });
-      this.$nextTick(() => {
-        console.timeEnd("js 运行时间：");
-      });
+      this.tableBodyDom.style.paddingTop = scrollTop + "px";
+      this.tableBodyDom.style.paddingBottom =
+        this.tableHeight -
+        this.visualItemNumber * this.itemSize -
+        scrollTop +
+        "px";
     },
     //单元格单击事件
     cellClick(row, column, cell, event) {
@@ -438,19 +265,9 @@ export default {
         this.$emit("cellClick", row, column, cell, event);
       }
     },
-    //每页条数change
-    handleSizeChange(size) {
-      this.$emit("size-change", size);
-      this.$refs["tableRef"].bodyWrapper.scrollTop = 0;
-    },
-    //当前页数change
-    handleCurrentChange(currentPage) {
-      this.$emit("current-change", currentPage);
-      this.$refs["tableRef"].bodyWrapper.scrollTop = 0;
-    },
     //当用户手动勾选数据行的 Checkbox 时触发的事件， 注意会多输出一个字段表示是选中还是取消选中
     select(selection, row) {
-      let _is_add = selection.some(i => i[this.rowKey] === row[this.rowKey]);
+      let _is_add = selection.some((i) => i[this.rowKey] === row[this.rowKey]);
       this.selectionList = selection;
       this.$emit("select", selection, row, _is_add);
     },
@@ -459,61 +276,38 @@ export default {
       this.selectionList = selections;
       this.$emit("selection-change", selections);
     },
-    //用于多选表格，清空用户的选择
-    clearSelection() {
-      this.$refs.tableRef.clearSelection();
-    },
     // 行点击事件
     handleRowClick(row) {
-      if (this.hasCheck && this.quickCheck) {
-        let selected = this.selectionList.some(
-          i => i[this.rowKey] == row[this.rowKey]
-        );
-        this.toggleRowSelection(row, !selected);
-        this.$nextTick(() => {
-          this.select(this.selectionList, row, !selected);
-        });
-      }
       this.$emit("row-click", row);
       this.rowClick && this.rowClick();
     },
-    // 默认选中
-    setDefaultCheck(val) {
-      this.$nextTick(() => {
-        if (Array.isArray(val)) {
-          if (val.length > 0) {
-            val.forEach(i => {
-              this.toggleRowSelection(i, true);
-            });
-          } else {
-            this.$refs["tableRef"].clearSelection();
-          }
-          return;
-        }
-        if (DataType.isObject(val)) {
-          this.setCurrentRow(val);
-        }
-      });
+    // 行双击击事件
+    handleRowDblClick(row) {
+      this.$emit("row-click", row);
+      this.rowdblClick && this.rowdblClick();
     },
-    // ------------------------------------------------一下为提供方法-------------------------------------------
+    //用于多选表格，清空用户的选择 -------------------------------------el-table方法--------------------
+    clearSelection() {
+      this.$refs["wl-table"].clearSelection();
+    },
     // 设置单行选中方法
     setCurrentRow(row) {
-      this.$refs["tableRef"].setCurrentRow(row);
+      this.$refs["wl-table"].setCurrentRow(row);
     },
     // 设置单行选中方法
     toggleRowSelection(row, selected) {
-      this.$refs["tableRef"].toggleRowSelection(row, selected);
+      this.$refs["wl-table"].toggleRowSelection(row, selected);
     },
     // 设置数表的行展开状态
     toggleRowExpansion(row, expanded = true) {
-      this.$refs["tableRef"].toggleRowExpansion(row, expanded);
+      this.$refs["wl-table"].toggleRowExpansion(row, expanded);
     },
     /**
      * 手动调用树表懒加载
      * row 要展开的行信息
      */
     loadTree(row) {
-      this.$refs["tableRef"].store.loadOrToggle(row);
+      this.$refs["wl-table"].store.loadOrToggle(row);
     },
     /**
      * 更新树表懒加载后的子节点
@@ -522,10 +316,10 @@ export default {
      */
     loadTreeAdd(id, data) {
       let _children =
-        this.$refs["tableRef"].store.states.lazyTreeNodeMap[id] || [];
+        this.$refs["wl-table"].store.states.lazyTreeNodeMap[id] || [];
       _children.unshift(data);
       this.$set(
-        this.$refs["tableRef"].store.states.lazyTreeNodeMap,
+        this.$refs["wl-table"].store.states.lazyTreeNodeMap,
         id,
         _children
       );
@@ -536,15 +330,41 @@ export default {
      * 要删掉的字节的rowKey
      */
     loadTreeRemove(id, key) {
-      let _children = this.$refs["tableRef"].store.states.lazyTreeNodeMap[id];
-      let _new_children = _children.filter(i => i[this.rowKey] != key);
+      let _children = this.$refs["wl-table"].store.states.lazyTreeNodeMap[id];
+      let _new_children = _children.filter((i) => i[this.rowKey] != key);
       this.$set(
-        this.$refs["tableRef"].store.states.lazyTreeNodeMap,
+        this.$refs["wl-table"].store.states.lazyTreeNodeMap,
         id,
         _new_children
       );
-    }
-  }
+    },
+  },
 };
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss">
+.wl-table {
+  height: 100%;
+  > .wl-table-main {
+    height: 100%;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: #f3f3f3;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(
+      to right,
+      #f5542b80,
+      #f5101080,
+      #e9394280
+    );
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+  }
+}
+</style>
