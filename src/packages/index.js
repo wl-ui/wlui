@@ -14,8 +14,9 @@ import WlBimViewer from "./bim-viewer";
 import WlExplorer from "./explorer";
 import WlGantt from "./gantt";
 import WlTree from "./tree";
+import WlFormDesigner from "./form-designer";
 
-const components = [WlSelect, WlSelectTree, WlTransferTree, WlAddress, WlAdd, WlInput, WlContainer, WlContextMenu, WlFadeIn, WlScroll, WlTable, WlTableDynamic, WlBimViewer, WlExplorer, WlGantt, WlTree];
+const components = [WlSelect, WlSelectTree, WlTransferTree, WlAddress, WlAdd, WlInput, WlContainer, WlContextMenu, WlFadeIn, WlScroll, WlTable, WlTableDynamic, WlBimViewer, WlExplorer, WlGantt, WlTree, WlFormDesigner];
 
 const install = function (Vue) {
   components.forEach(component => {
@@ -28,11 +29,11 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export {
-  WlSelect, WlSelectTree, WlTransferTree, WlAddress, WlAdd, WlInput, WlContainer, WlContextMenu, WlFadeIn, WlScroll, WlTable, WlTableDynamic, WlBimViewer, WlExplorer, WlGantt, WlTree
+  WlSelect, WlSelectTree, WlTransferTree, WlAddress, WlAdd, WlInput, WlContainer, WlContextMenu, WlFadeIn, WlScroll, WlTable, WlTableDynamic, WlBimViewer, WlExplorer, WlGantt, WlTree, WlFormDesigner
 }
 
 export default {
   install,
-  WlSelect, WlSelectTree, WlTransferTree, WlAddress, WlAdd, WlInput, WlContainer, WlContextMenu, WlFadeIn, WlScroll, WlTable, WlTableDynamic, WlBimViewer, WlExplorer, WlGantt, WlTree
+  WlSelect, WlSelectTree, WlTransferTree, WlAddress, WlAdd, WlInput, WlContainer, WlContextMenu, WlFadeIn, WlScroll, WlTable, WlTableDynamic, WlBimViewer, WlExplorer, WlGantt, WlTree, WlFormDesigner
 };
 

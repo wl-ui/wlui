@@ -4,7 +4,10 @@
     <wl-container>
       <template #header>
         <div class="logo-box">
-          <img class="logo" src="http://wlbase.oss-cn-beijing.aliyuncs.com/wlui-logo.jpg" />
+          <img
+            class="logo"
+            src="http://wlbase.oss-cn-beijing.aliyuncs.com/wlui-logo.jpg"
+          />
         </div>
       </template>
       <!-- 基础组件 -->
@@ -15,7 +18,11 @@
         </el-col>
         <el-col :span="6">
           <h3>树下拉框</h3>
-          <wl-select-tree width="240px" :data="treeData" v-model="selected"></wl-select-tree>
+          <wl-select-tree
+            width="240px"
+            :data="treeData"
+            v-model="selected"
+          ></wl-select-tree>
         </el-col>
         <el-col :span="6">
           <h3>三级地址</h3>
@@ -49,24 +56,23 @@
           <h3>动态表格</h3>
           <wl-table-dynamic class="width-460"></wl-table-dynamic>
         </el-col>
-        <!-- <el-col :span="24">
+        <el-col :span="24">
           <h3>BIM模型</h3>
-          <wl-bim-viewer multiple :docs="bims" class="wl-viewer"></wl-bim-viewer>
+          <wl-bim-viewer
+            multiple
+            :docs="bims"
+            class="wl-viewer"
+          ></wl-bim-viewer>
         </el-col>
         <el-col :span="24">
           <h3>Gantt甘特图</h3>
-          <wl-gantt
-            use-real-time
-            default-expand-all
-            end-date="2019-11-02"
-            start-date="2019-9-06"
-            date-type="monthAndDay"
-            :data="ganttData"
-            @timeChange="timeChange"
-            @preChange="preChange"
-            @expand-change="expandChange"
-          ></wl-gantt>
-        </el-col> -->
+        </el-col>
+        <el-col :span="24">
+          <h3>表单设计器</h3>
+          <wl-form-designer class="wl-form-designer">
+            <span slot="title-left">请假</span>
+          </wl-form-designer>
+        </el-col>
         <el-col :span="24">
           <h3>Explorer文件管理器云盘</h3>
           <wl-explorer
@@ -89,7 +95,7 @@
             <!-- 操作文件夹滑入区 -->
             <fade-in v-show="fade.folder">
               <h3 class="edit-header">
-                <p>{{folder_form.Id?'编辑':'新增'}}文件夹</p>
+                <p>{{ folder_form.Id ? "编辑" : "新增" }}文件夹</p>
               </h3>
               <wl-scroll class="scroll">
                 <el-form
@@ -112,7 +118,10 @@
                     ></wl-select-tree>
                   </el-form-item>
                   <el-form-item label="文件夹名称 " prop="Name">
-                    <el-input v-model="folder_form.Name" placeholder="请输入文件夹名称"></el-input>
+                    <el-input
+                      v-model="folder_form.Name"
+                      placeholder="请输入文件夹名称"
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="备注说明" prop="Describe">
                     <el-input
@@ -125,8 +134,13 @@
                 </el-form>
               </wl-scroll>
               <div class="submit-btn-box">
-                <submit-btn @btn="submitFolderFrom('folder_form')" :status="load.folder"></submit-btn>
-                <el-button size="medium" @click="fade.folder = false">取消</el-button>
+                <submit-btn
+                  @btn="submitFolderFrom('folder_form')"
+                  :status="load.folder"
+                ></submit-btn>
+                <el-button size="medium" @click="fade.folder = false"
+                  >取消</el-button
+                >
               </div>
             </fade-in>
           </wl-explorer>
@@ -137,8 +151,12 @@
         biubiubiu~
         <template #footer>
           <div>
-            <el-button size="small" @click="layout.fade = false">取 消</el-button>
-            <el-button size="small" @click="layout.fade = false">确 定</el-button>
+            <el-button size="small" @click="layout.fade = false"
+              >取 消</el-button
+            >
+            <el-button size="small" @click="layout.fade = false"
+              >确 定</el-button
+            >
           </div>
         </template>
       </wl-fade-in>
@@ -154,7 +172,7 @@ import { arrayToTree } from "wl-core";
 import {
   getFileListApi, // 1获取文件夹列表
   getAllFoldersApi, // 4获取全部文件夹
-  delFileApi // 6删除文件|文件夹
+  delFileApi, // 6删除文件|文件夹
 } from "@/api/explorer"; // 导入接口
 const apiok = 200;
 
@@ -167,7 +185,7 @@ export default {
     return {
       layout: {
         fade: false,
-        contextmenu: false
+        contextmenu: false,
       },
       // ---------------------------------------------select tree
       treeData: [
@@ -175,78 +193,78 @@ export default {
           children: [
             {
               name: "安全运营-子类型001",
-              id: "4028dbde729c1e0301729c1fa7390001"
+              id: "4028dbde729c1e0301729c1fa7390001",
             },
             { name: "安全运营-子1", id: "8a8be6ac72ad7a3a0172bb37f6e40001" },
             { name: "安全运营-子2", id: "8a8be6ac72ad7a3a0172bb381bbf0002" },
-            { name: "安全运营-子3", id: "8a8be6ac72ad7a3a0172bb3843e60003" }
+            { name: "安全运营-子3", id: "8a8be6ac72ad7a3a0172bb3843e60003" },
           ],
           name: "安全运营",
-          id: "4028dbde729c1e0301729c1ea1560000"
+          id: "4028dbde729c1e0301729c1ea1560000",
         },
         {
           children: [
             { name: "测试类型二", id: "8a8be6ac72a68ea60172a7312cf30002" },
             { name: "测试类型-子1", id: "8a8be6ac72ad7a3a0172bb38804c0004" },
             { name: "测试类型-子2", id: "8a8be6ac72ad7a3a0172bb3893d30005" },
-            { name: "测试类型-子3", id: "8a8be6ac72ad7a3a0172bb38a6f50006" }
+            { name: "测试类型-子3", id: "8a8be6ac72ad7a3a0172bb38a6f50006" },
           ],
           name: "测试类型",
-          id: "8a8be6ac72a68ea60172a730ef8a0001"
+          id: "8a8be6ac72a68ea60172a730ef8a0001",
         },
         {
           children: [],
           name: "测试类型六",
-          id: "8a8be6ac72a68ea60172a73200340003"
-        }
+          id: "8a8be6ac72a68ea60172a73200340003",
+        },
       ],
       selected: ["8a8be6ac72ad7a3a0172bb38a6f50006"],
       // ----------------------------------------------- 右键菜单
       contextmenu: {
         x: 0,
         y: 0,
-        tag: null
+        tag: null,
       },
       contextmenu_list: [
         { icon: "el-icon-back", title: "关闭左侧", value: "left" },
         { icon: "el-icon-right", title: "关闭右侧", value: "right" },
         { icon: "el-icon-close", title: "关闭其它", value: "other" },
-        { icon: "el-icon-circle-close", title: "关闭全部", value: "all" }
+        { icon: "el-icon-circle-close", title: "关闭全部", value: "all" },
       ],
       // -------------------------------------- bim
       bims: [
         {
           name: "urn_model1",
           path: "http://wlui.oss-cn-beijing.aliyuncs.com/bimdata/demo1/0.svf",
-          modelObj: null
+          modelObj: null,
         },
         {
           name: "urn_model2",
           path: "http://wlui.oss-cn-beijing.aliyuncs.com/bimdata/demo2/0.svf",
-          modelObj: null
+          modelObj: null,
         },
         {
           name: "urn_model3",
           path: "http://wlui.oss-cn-beijing.aliyuncs.com/bimdata/demo3/0.svf",
-          modelObj: null
+          modelObj: null,
         },
         {
           name: "urn_model4",
           path: "http://wlui.oss-cn-beijing.aliyuncs.com/bimdata/demo4/0.svf",
-          modelObj: null
+          modelObj: null,
         },
         {
           name: "urn_model5",
           path:
             "http://wlui.oss-cn-beijing.aliyuncs.com/bimdata/demo5/Sphere.svf",
-          modelObj: null
+          modelObj: null,
         },
         {
           name: "urn_model6",
           path:
             "http://wlui.oss-cn-beijing.aliyuncs.com/bimdata/demo5/Sphere.svf",
-          modelObj: null
-        }
+          modelObj: null,
+        },
       ],
       // --------------------------------------------- gantt
       ganttData: [
@@ -271,60 +289,60 @@ export default {
                   pid: "1-1",
                   name: "日落云巅",
                   startDate: "2019-09-10",
-                  endDate: "2019-09-13"
-                }
-              ]
+                  endDate: "2019-09-13",
+                },
+              ],
             },
             {
               id: "1-2",
               pid: "1",
               name: "天空之镜",
               startDate: "2019-09-17",
-              endDate: "2019-09-22"
+              endDate: "2019-09-22",
             },
             {
               id: "1-3",
               name: "蓬莱之岛",
               pid: "1",
               startDate: "2019-09-25",
-              endDate: "2019-09-30"
+              endDate: "2019-09-30",
             },
             {
               id: "1-4",
               pid: "1",
               name: "西塘之南",
               startDate: "2019-10-03",
-              endDate: "2019-10-07"
+              endDate: "2019-10-07",
             },
             {
               pid: "1",
               id: "1-5",
               name: "凤凰之缘",
               startDate: "2019-10-11",
-              endDate: "2019-10-19"
-            }
-          ]
+              endDate: "2019-10-19",
+            },
+          ],
         },
         {
           id: "2",
           name: "租房子",
           startDate: "2019-09-20",
-          endDate: "2019-10-31"
-        }
+          endDate: "2019-10-31",
+        },
       ],
       // ------------------------------------------- explorer
       load: {
-        folder: false
+        folder: false,
       }, // loading管理
       fade: {
-        folder: false
+        folder: false,
       }, // 弹出类视图管理
       headerHandle: [{ name: "权限", command: "auth" }], // 头部按钮更多操作-自定义权限
       file_table_columns: [
         {
           label: "名称",
           prop: "Name",
-          minWidth: 120
+          minWidth: 120,
         },
         {
           label: "修改日期",
@@ -332,7 +350,7 @@ export default {
           width: 120,
           formatter(row) {
             return row.EditTime.split("T")[0] || "-";
-          }
+          },
         },
         {
           label: "类型",
@@ -340,7 +358,7 @@ export default {
           width: 90,
           formatter(row) {
             return row.Type === 1 ? "文件夹" : row.SuffixName;
-          }
+          },
         },
         {
           label: "大小",
@@ -359,7 +377,7 @@ export default {
             }
             let _gb = (row.Size / _GB).toFixed(2);
             return parseFloat(_gb) + "GB";
-          }
+          },
         },
         {
           label: "创建日期",
@@ -367,7 +385,7 @@ export default {
           width: 120,
           formatter(row) {
             return row.CreateTime.split("T")[0] || "-";
-          }
+          },
         },
         {
           label: "作者",
@@ -375,15 +393,15 @@ export default {
           align: "center",
           formatter(row) {
             return row.CreateUserName || "-";
-          }
+          },
         },
         {
           label: "描述",
           minWidth: 100,
           formatter(row) {
             return row.Describe || "-";
-          }
-        }
+          },
+        },
       ], // 自定义表格列
       file_table_data: [], // 表格数据
       all_folder_list: [], // 所有文件夹列表
@@ -392,10 +410,10 @@ export default {
         folder: 1,
         img: 2,
         video: 3,
-        other: 4
+        other: 4,
       }, // 文件类型
       rource_type: {
-        self: 1 // 自建
+        self: 1, // 自建
       }, // 数据来源类型
       explorer_prop: {
         name: "Name",
@@ -408,7 +426,7 @@ export default {
         pathChildren: "Children", // String 路径数据 children字段
         pathConnector: "\\", // String 路径父子数据拼接连接符,默认为'\'
         pathParents: "Parents", // String 路径数据所有直系祖先节点自增长identityId逗号拼接
-        pathIdentityId: "IdentityId" // String 路径数据自增长id
+        pathIdentityId: "IdentityId", // String 路径数据自增长id
       }, // 文件管理器配置项
       path: {}, // 路径数据
       folder_form: {
@@ -416,19 +434,21 @@ export default {
         Name: "",
         preview: [],
         handle: [],
-        Describe: ""
+        Describe: "",
       }, // 文件夹表单
       folder_rules: {
-        Name: [{ required: true, message: "请填写文件夹名称", trigger: "blur" }]
+        Name: [
+          { required: true, message: "请填写文件夹名称", trigger: "blur" },
+        ],
       }, // 文件夹表单验证
       child_act_saved: {}, // 存储子组件数据，用于编辑更新
       tree_select_prop: {
         label: "Name",
-        children: "Children"
+        children: "Children",
       }, // 树形下拉框配置项
       uploadOptions: {
-        aa: 1212
-      } // 上传文件附加参数
+        aa: 1212,
+      }, // 上传文件附加参数
     };
   },
   created() {
@@ -534,7 +554,7 @@ export default {
     },
     // 提交文件夹表单
     submitFolderFrom(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           this.load.folder = true;
           setTimeout(() => {
@@ -553,7 +573,7 @@ export default {
                 let _new_data = {
                   id: res_data.Id,
                   pid: res_data.ParentId,
-                  path: res_data.Name
+                  path: res_data.Name,
                 };
                 this.$refs["wl-explorer-cpt"].updateHistoryData(
                   { Id: res_data.ParentId },
@@ -569,7 +589,7 @@ export default {
             this.$message({
               showClose: true,
               message: "操作成功",
-              type: "success"
+              type: "success",
             });
           }, 1000);
         } else {
@@ -582,7 +602,7 @@ export default {
       let cannot_del_data = []; // 收集不可删除数据
       let normal_data_file = []; // 收集可删除文件
       let normal_data_folder = []; // 收集可删除文件夹
-      data.forEach(i => {
+      data.forEach((i) => {
         i.RourceType !== this.rource_type.self
           ? cannot_del_data.push(i) // 不可删除数据
           : i.Type === this.type.folder
@@ -592,7 +612,7 @@ export default {
       // 不可删除数据进行提示
       if (cannot_del_data.length > 0) {
         let _msg = '<p class="title">以下文件或文件夹不可删除，已自动过滤</p>';
-        cannot_del_data.forEach(i => {
+        cannot_del_data.forEach((i) => {
           _msg += `<p class="msg">${i.Name}</p>`;
         });
         this.$message({
@@ -600,7 +620,7 @@ export default {
           showClose: true,
           message: _msg,
           type: "warning",
-          customClass: "mulit-msg"
+          customClass: "mulit-msg",
         });
       }
       if (normal_data_folder.length === 0 && normal_data_file.length === 0)
@@ -608,17 +628,17 @@ export default {
       // 可删除数据正常删除
       let _data = {
         FolderIds: normal_data_folder,
-        FolderFileIds: normal_data_file
+        FolderFileIds: normal_data_file,
       };
       delFileApi(_data).then(({ data }) => {
         if (data.StatusCode === apiok) {
           this.file_table_data = this.file_table_data.filter(
-            i => ![...normal_data_file, ...normal_data_folder].includes(i.Id)
+            (i) => ![...normal_data_file, ...normal_data_folder].includes(i.Id)
           );
           this.$message({
             showClose: true,
             message: data.Message,
-            type: "success"
+            type: "success",
           });
         }
       });
@@ -632,7 +652,7 @@ export default {
           let options = {
             id: this.explorer_prop.pathId,
             pid: this.explorer_prop.pathPid,
-            children: "Children"
+            children: "Children",
           };
           this.tree_folder_list = arrayToTree(_list, options);
         }
@@ -641,8 +661,8 @@ export default {
     // 判断是否文件夹函数
     isFolderFn(row) {
       return row.Type === this.type.folder;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -657,8 +677,9 @@ export default {
 
   .logo-box {
     text-align: center;
+    height: 90px;
     > .logo {
-      width: 240px;
+      height: 100%;
     }
   }
 

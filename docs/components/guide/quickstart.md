@@ -59,7 +59,8 @@ import {
   WlTableDynamic, 
   WlBimViewer, 
   WlExplorer, 
-  WlGantt
+  WlGantt,
+  WlFormDesigner
 } from 'weilan-ui';
 ```
 
