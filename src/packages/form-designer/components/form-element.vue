@@ -16,46 +16,22 @@
     </div>
     <!-- 表单元素列表 -->
     <div class="element-box">
-      <transition name="fade">
-        <div
-          key="element-item"
-          v-if="isElementItemActive"
-          class="element-type element-item-box"
-        >
-          <draggable
-            class="draggable-box"
-            v-model="elementList"
-            group="people"
-          >
-            <transition-group tag="ul">
-              <li
-                class="draggable-item"
-                v-for="item in elementList"
-                :key="item.key"
-                @click="handleElementSelect(item)"
-              >
-                <i class="iconfont draggable-icon" :class="item.icon"></i>
-                <span>{{ item.name }}</span>
-              </li>
-            </transition-group>
-          </draggable>
-        </div>
-        <div key="element-group" v-else class="element-type element-group-box">
+      <el-scrollbar class="element-box-scroll">
+        <transition name="fade">
           <div
-            class="group-draggable-box"
-            v-for="mode of elementGroupList"
-            :key="mode.key"
+            key="element-item"
+            v-if="isElementItemActive"
+            class="element-type element-item-box"
           >
-            <h3 class="group-mode-title">{{ mode.name }}</h3>
             <draggable
               class="draggable-box"
-              v-model="mode.children"
+              v-model="elementList"
               group="people"
             >
               <transition-group tag="ul">
                 <li
                   class="draggable-item"
-                  v-for="item in mode.children"
+                  v-for="item in elementList"
                   :key="item.key"
                   @click="handleElementSelect(item)"
                 >
@@ -65,8 +41,38 @@
               </transition-group>
             </draggable>
           </div>
-        </div>
-      </transition>
+          <div
+            key="element-group"
+            v-else
+            class="element-type element-group-box"
+          >
+            <div
+              class="group-draggable-box"
+              v-for="mode of elementGroupList"
+              :key="mode.key"
+            >
+              <h3 class="group-mode-title">{{ mode.name }}</h3>
+              <draggable
+                class="draggable-box"
+                v-model="mode.children"
+                group="people"
+              >
+                <transition-group tag="ul">
+                  <li
+                    class="draggable-item"
+                    v-for="item in mode.children"
+                    :key="item.key"
+                    @click="handleElementSelect(item)"
+                  >
+                    <i class="iconfont draggable-icon" :class="item.icon"></i>
+                    <span>{{ item.name }}</span>
+                  </li>
+                </transition-group>
+              </draggable>
+            </div>
+          </div>
+        </transition>
+      </el-scrollbar>
     </div>
   </div>
 </template>
@@ -124,9 +130,11 @@ export default {
   > .element-box {
     position: relative;
     flex: 1;
-    overflow: auto;
-
-    > .element-type {
+    overflow: hidden;
+    > .element-box-scroll {
+      height: 100%;
+    }
+    .element-type {
       position: absolute;
       top: 0;
       left: 0;

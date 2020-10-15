@@ -34,12 +34,16 @@
       <!-- 表单元素区 -->
       <form-element></form-element>
       <!-- 表单预览区 -->
-      <form-view ref="form-view"></form-view>
+      <form-view ref="form-view" :formElementType="formElementType"></form-view>
       <!-- 表单字段描述区 -->
-      <form-info></form-info>
+      <form-info :formElementType="formElementType"></form-info>
     </div>
     <!-- 预览 弹出区 -->
-    <popup-preview :code="formJson" v-if="layout.preview" @close="layout.preview = false"></popup-preview>
+    <popup-preview
+      :code="formJson"
+      v-if="layout.preview"
+      @close="layout.preview = false"
+    ></popup-preview>
   </div>
 </template>
 
@@ -54,8 +58,14 @@ export default {
   components: { FormElement, FormInfo, FormView, PopupPreview },
   data() {
     return {
-      layout: { preview: false },
-      formJson: [],
+      layout: { preview: false }, // 视图管理
+      formElementType: {
+        number: "element-3",
+        checkbox: ["element-4", "element-5"],
+        date: ["element-6", "element-7"],
+        money: ["element-10"],
+      }, // 表单元素类型，用于显示不同字段信息
+      formJson: [], // 表单json
     };
   },
   methods: {
@@ -120,7 +130,6 @@ export default {
   .width-full {
     width: 100%;
   }
-
   .el-scrollbar__wrap {
     overflow-x: hidden;
   }
