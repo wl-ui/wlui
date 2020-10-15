@@ -28,6 +28,12 @@
                   >
                     大写
                   </p>
+                  <p
+                    v-else-if="formElementType.date.includes(item._key)"
+                    class="form-item-des"
+                  >
+                    {{ item.durationLabel }}
+                  </p>
                 </el-form-item>
                 <p class="item-del-box" @click.stop="handleFormJsonDel(item)">
                   <i class="iconfont wl-shanchu"></i>
@@ -92,6 +98,13 @@ export default {
       );
       this.formJson = theNext.nextData;
       this.handleFormJsonClick(theNext.nextItem);
+    },
+    // 回显时重置整个json
+    setJson(data) {
+      this.formJson = data;
+      if (data.length) {
+        this.handleFormJsonClick(data[0]);
+      }
     },
   },
 };

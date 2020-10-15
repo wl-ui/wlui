@@ -32,6 +32,7 @@ export default {
 ### 方法
 
 > getFormJson() 返回json数据
+> setFormJson(data:Array) 此方法将json覆盖时机完全自由的交给用户调度，例如需要编辑回显json数据时
 
 ### 事件
 

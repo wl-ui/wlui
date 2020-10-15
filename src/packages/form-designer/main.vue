@@ -80,8 +80,14 @@ export default {
       this.$emit("publish", this.getFormJson());
     },
     // --------------------------- 方法 -----------------------------
+     // 获取表单json
     getFormJson() {
       return this.$refs["form-view"].formJson;
+    },
+    // 设置表单json
+    setFormJson(data) {
+      if (!Array.isArray(data)) throw Error("data必须是一个数组");
+      this.$refs["form-view"].setJson(data);
     },
   },
 };
