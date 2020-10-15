@@ -2,14 +2,14 @@
 node_modules
 /dist
 docs/.vuepress/dist
-docs
-mock
-public
-src
-static
-babel.config.js
-vue.config.js
-yarn.lock
+# docs
+# mock
+# public
+# src
+# static
+# babel.config.js
+# vue.config.js
+# yarn.lock
 
 # local env files
 .env.local
