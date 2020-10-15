@@ -101,10 +101,10 @@
             <el-input v-model="form.diyClass"></el-input>
           </el-form-item>
           <el-form-item label="自定义校验规则">
-            <el-input v-model="form.diyClass"></el-input>
+            <el-input v-model="form.diyRegular"></el-input>
           </el-form-item>
           <el-form-item label="自定义错误提示语">
-            <el-input v-model="form.diyClass"></el-input>
+            <el-input v-model="form.diyErrMsg"></el-input>
           </el-form-item>
         </el-form>
       </el-scrollbar>
@@ -139,6 +139,8 @@ export default {
         isRequired: false, // 必填
         defaultValue: null, // 默认值
         diyClass: "", // 自定义类名
+        diyRegular: "", // 自定义正则
+        diyErrMsg: "", // 自定义错误提示语
       }, // 字段元素公共模板
       unmberTemplate: {
         unit: "", // 单位
