@@ -1,6 +1,6 @@
 {
   "name": "weilan-ui",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": false,
   "author": "weilan<https://github.com/wl-ui>",
   "scripts": {
@@ -11,7 +11,7 @@
     "docbuild": "vuepress build docs",
     "lint": "vue-cli-service lint"
   },
-  "main": "weilan-ui.umd.min.js",
+  "main": "lib/weilan-ui.umd.min.js",
   "dependencies": {
     "dayjs": "^1.8.28",
     "vue-video-player": "^5.0.2",
