@@ -1,4 +1,4 @@
-## WlFormDesigner 表单设计器
+## WlFormParser 表单解释器
 
 可视化配置表单并生成 Json数据 和 Vue Template 结构，可以轻松配合市面上主流ui库使用；
 配合`WlFormParser`表单解释器效果更佳。
@@ -15,33 +15,27 @@
 
 <template>
   <div>
-    <wl-form-designer class="wl-form-designer">
-      <span slot="title-left">请假</span>
-    </wl-form-designer>
+    <form-parser
+      class="form-parser"
+      ui="vant"
+      :json="code"
+    ></form-parser>
   </div>
 </template>
 
 <script>
-import { WlFormDesigner } from "weilan-ui";
+import { WlFormParser } from "weilan-ui";
 import "weilan-ui.css"
 
 export default {
   name: "PageForm",
-  components: { WlFormDesigner },
+  components: { WlFormParser },
   data() {
-    return {};
+    return {
+      code:[]
+    };
   },
 };
 </script>
 
 ```
-
-### 方法
-
-> getFormJson() 返回json数据
-> setFormJson(data:Array) 此方法将json覆盖时机完全自由的交给用户调度，例如需要编辑回显json数据时
-
-### 事件
-
-> preview 预览事件
-> publish 发布事件
