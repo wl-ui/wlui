@@ -115,7 +115,9 @@ export default {
 
 .designer-body-view {
   flex: 1;
-  overflow: auto;
+  min-width: 45%;
+  min-height: 580px;
+  overflow: hidden;
   .el-form-item__label {
     padding: 0;
   }
@@ -124,8 +126,6 @@ export default {
     margin: 30px auto;
     border: 1px solid $phone-border-color;
     background-color: $form-element-bg;
-    width: 360px;
-    height: 640px;
     padding: 10px;
     border-radius: 20px;
     box-sizing: border-box;
@@ -138,6 +138,18 @@ export default {
       > .form-view-scroll {
         height: 100%;
       }
+    }
+  }
+  @media screen and (min-width: 1600px) {
+    .phone-outer-layer {
+      width: 360px;
+      height: 640px;
+    }
+  }
+  @media screen and (max-width: 1600px) {
+    .phone-outer-layer {
+      width: 320px;
+      height: 569px;
     }
   }
 }

@@ -260,7 +260,8 @@ export default {
   display: flex;
   flex-direction: column;
   border-left: 1px solid $form-element-bg-hover;
-  width: 300px;
+  width: 320px;
+  overflow: hidden;
 
   > .from-info-title {
     padding: 6px $padding;

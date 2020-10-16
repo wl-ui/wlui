@@ -2,11 +2,17 @@
 node_modules
 /dist
 docs/.vuepress/dist
+lib
 # docs
 # mock
 # public
 # src
 # static
+# /docs
+# /mock
+# /public
+# /src
+# /static
 # babel.config.js
 # vue.config.js
 # yarn.lock

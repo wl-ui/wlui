@@ -1,22 +1,22 @@
-import WlSelect from "./select";
-import WlSelectTree from "./select-tree";
-import WlTransferTree from "./transfer-tree";
-import WlAddress from "./address";
-import WlAdd from "./add";
-import WlInput from "./input";
-import WlContainer from "./container";
-import WlContextMenu from "./context-menu";
-import WlFadeIn from "./fade-in";
-import WlScroll from "./scroll";
-import WlTable from "./table";
-import WlTableDynamic from "./table-dynamic";
-import WlBimViewer from "./bim-viewer";
-import WlExplorer from "./explorer";
-import WlGantt from "./gantt";
-import WlTree from "./tree";
-import WlFormDesigner from "./form-designer";
+import Select from "./select";
+import SelectTree from "./select-tree";
+import TransferTree from "./transfer-tree";
+import Address from "./address";
+import Add from "./add";
+import Input from "./input";
+import Container from "./container";
+import ContextMenu from "./context-menu";
+import FadeIn from "./fade-in";
+import Scroll from "./scroll";
+import Table from "./table";
+import TableDynamic from "./table-dynamic";
+import BimViewer from "./bim-viewer";
+import Explorer from "./explorer";
+import Gantt from "./gantt";
+import Tree from "./tree";
+import FormDesigner from "./form-designer";
 
-const components = [WlSelect, WlSelectTree, WlTransferTree, WlAddress, WlAdd, WlInput, WlContainer, WlContextMenu, WlFadeIn, WlScroll, WlTable, WlTableDynamic, WlBimViewer, WlExplorer, WlGantt, WlTree, WlFormDesigner];
+const components = [Select, SelectTree, TransferTree, Address, Add, Input, Container, ContextMenu, FadeIn, Scroll, Table, TableDynamic, BimViewer, Explorer, Gantt, Tree, FormDesigner];
 
 const install = function (Vue) {
   components.forEach(component => {
@@ -29,11 +29,11 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export {
-  WlSelect, WlSelectTree, WlTransferTree, WlAddress, WlAdd, WlInput, WlContainer, WlContextMenu, WlFadeIn, WlScroll, WlTable, WlTableDynamic, WlBimViewer, WlExplorer, WlGantt, WlTree, WlFormDesigner
+  Select, SelectTree, TransferTree, Address, Add, Input, Container, ContextMenu, FadeIn, Scroll, Table, TableDynamic, BimViewer, Explorer, Gantt, Tree, FormDesigner
 }
 
 export default {
   install,
-  WlSelect, WlSelectTree, WlTransferTree, WlAddress, WlAdd, WlInput, WlContainer, WlContextMenu, WlFadeIn, WlScroll, WlTable, WlTableDynamic, WlBimViewer, WlExplorer, WlGantt, WlTree, WlFormDesigner
+  Select, SelectTree, TransferTree, Address, Add, Input, Container, ContextMenu, FadeIn, Scroll, Table, TableDynamic, BimViewer, Explorer, Gantt, Tree, FormDesigner
 };
 

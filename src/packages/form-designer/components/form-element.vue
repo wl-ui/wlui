@@ -15,23 +15,43 @@
       </el-radio-group>
     </div>
     <!-- 表单元素列表 -->
-    <div class="element-box">
-      <el-scrollbar class="element-box-scroll">
-        <transition name="fade">
+    <el-scrollbar class="element-box-scroll">
+      <transition name="fade">
+        <div
+          key="element-item"
+          v-if="isElementItemActive"
+          class="element-type element-item-box"
+        >
+          <draggable class="draggable-box" v-model="elementList" group="people">
+            <transition-group tag="ul">
+              <li
+                class="draggable-item"
+                v-for="item in elementList"
+                :key="item.key"
+                @click="handleElementSelect(item)"
+              >
+                <i class="iconfont draggable-icon" :class="item.icon"></i>
+                <span>{{ item.name }}</span>
+              </li>
+            </transition-group>
+          </draggable>
+        </div>
+        <div key="element-group" v-else class="element-type element-group-box">
           <div
-            key="element-item"
-            v-if="isElementItemActive"
-            class="element-type element-item-box"
+            class="group-draggable-box"
+            v-for="mode of elementGroupList"
+            :key="mode.key"
           >
+            <h3 class="group-mode-title">{{ mode.name }}</h3>
             <draggable
               class="draggable-box"
-              v-model="elementList"
+              v-model="mode.children"
               group="people"
             >
               <transition-group tag="ul">
                 <li
                   class="draggable-item"
-                  v-for="item in elementList"
+                  v-for="item in mode.children"
                   :key="item.key"
                   @click="handleElementSelect(item)"
                 >
@@ -41,39 +61,9 @@
               </transition-group>
             </draggable>
           </div>
-          <div
-            key="element-group"
-            v-else
-            class="element-type element-group-box"
-          >
-            <div
-              class="group-draggable-box"
-              v-for="mode of elementGroupList"
-              :key="mode.key"
-            >
-              <h3 class="group-mode-title">{{ mode.name }}</h3>
-              <draggable
-                class="draggable-box"
-                v-model="mode.children"
-                group="people"
-              >
-                <transition-group tag="ul">
-                  <li
-                    class="draggable-item"
-                    v-for="item in mode.children"
-                    :key="item.key"
-                    @click="handleElementSelect(item)"
-                  >
-                    <i class="iconfont draggable-icon" :class="item.icon"></i>
-                    <span>{{ item.name }}</span>
-                  </li>
-                </transition-group>
-              </draggable>
-            </div>
-          </div>
-        </transition>
-      </el-scrollbar>
-    </div>
+        </div>
+      </transition>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -121,49 +111,46 @@ export default {
   display: flex;
   flex-direction: column;
   border-right: 1px solid $form-element-bg-hover;
-  width: 250px;
+  width: 300px;
   padding: $padding;
+
   > .element-type-box {
     height: 50px;
   }
 
-  > .element-box {
-    position: relative;
+  > .element-box-scroll {
     flex: 1;
-    overflow: hidden;
-    > .element-box-scroll {
-      height: 100%;
+  }
+  .el-scrollbar__view {
+    position: relative;
+  }
+  .element-type {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    .group-mode-title {
+      margin: 8px 0;
     }
-    .element-type {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+  }
 
-      .group-mode-title {
-        margin: 8px 0;
-      }
+  .draggable-item {
+    width: 48%;
+    margin: 5px 0;
+    border: 1px solid $form-element-bg-hover;
+    padding: 4px 10px;
+    background-color: $form-element-bg;
+    cursor: pointer;
+    line-height: 28px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    &:hover {
+      border-color: $form-element-bg;
+      background-color: $form-element-bg-hover;
     }
 
-    .draggable-item {
-      width: 48%;
-      margin: 5px 0;
-      border: 1px solid $form-element-bg-hover;
-      padding: 4px 10px;
-      background-color: $form-element-bg;
-      cursor: pointer;
-      line-height: 28px;
-      border-radius: 6px;
-      box-sizing: border-box;
-      &:hover {
-        border-color: $form-element-bg;
-        background-color: $form-element-bg-hover;
-      }
-
-      > .draggable-icon {
-        margin-right: 10px;
-      }
+    > .draggable-icon {
+      margin-right: 10px;
     }
   }
 

@@ -80,7 +80,7 @@ export default {
       this.$emit("publish", this.getFormJson());
     },
     // --------------------------- 方法 -----------------------------
-     // 获取表单json
+    // 获取表单json
     getFormJson() {
       return this.$refs["form-view"].formJson;
     },
@@ -122,8 +122,9 @@ export default {
 
   .form-designer-body {
     display: flex;
-    height: 100%;
+    flex: 1;
     background: $form-bg;
+    overflow: hidden;
   }
 
   .draggable-item {
