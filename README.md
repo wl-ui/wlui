@@ -20,24 +20,43 @@ yarn add weilan-ui
 ```
 
 ## Quick Start
+
+> 全部引入
 ``` js
 import Vue from 'vue'
 import WeilanUi from 'weilan-ui'
 import 'weilan-ui/lib/weilan-ui.css';
 
 Vue.use(WeilanUi)
+```
 
-// or
-
+> 按需引入
+```js
 import {
-  WlGantt,
-  WlExplorer
-  // ...
+  Gantt, 
+  Explorer, 
+  BimViewer, 
+  TransferTree, 
+  FormDesigner
+  FormParser
+  Container, 
+  ContextMenu, 
+  FadeIn, 
+  Scroll, 
+  Address, 
+  Add, 
+  Input, 
+  Select, 
+  SelectTree, 
+  Tree, 
+  Table, 
+  TableDynamic, 
 } from 'weilan-ui'
 import 'weilan-ui/lib/weilan-ui.css';
 
-Vue.use(WlGantt)
-Vue.use(WlExplorer)
+Vue.use(Gantt)
+Vue.use(Explorer)
+...
 ```
 
 ## Donation
@@ -49,6 +68,6 @@ Vue.use(WlExplorer)
 
 ## 社区
 
-| Issue | QQ群 |
-|---|---|
+| Issue                                               | QQ群                                                                       |
+|-----------------------------------------------------|----------------------------------------------------------------------------|
 | [wlui/issues](https://github.com/wl-ui/wlui/issues) | <img src="http://wlbase.oss-cn-beijing.aliyuncs.com/qq.jpg" width="200" /> |

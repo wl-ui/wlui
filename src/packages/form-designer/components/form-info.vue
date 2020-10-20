@@ -11,11 +11,30 @@
       <el-scrollbar class="form-info-scroll">
         <el-form ref="form" :model="form" label-position="top">
           <!-- 公共信息 -->
+          <el-form-item label="字段标识">
+            <el-input v-model="form.fieldKey"></el-input>
+          </el-form-item>
           <el-form-item label="标题">
             <el-input v-model="form.label"></el-input>
           </el-form-item>
-          <el-form-item label="提示文字">
+          <!-- 日期区间 -->
+          <el-form-item
+            label="标题2"
+            v-if="formElementType.dateRange.includes(title.key)"
+          >
+            <el-input v-model="form.label2"></el-input>
+          </el-form-item>
+          <!-- 正常提示文字 -->
+          <el-form-item
+            label="提示文字"
+            v-if="!formElementType.rate.includes(title.key)"
+          >
             <el-input v-model="form.placeholder"></el-input>
+          </el-form-item>
+          <!-- 评分提示文字 -->
+          <el-form-item label="评分制" v-else>
+            <el-radio v-model="form.scoringSystem" :label="5">5分制</el-radio>
+            <el-radio v-model="form.scoringSystem" :label="10">10分制</el-radio>
           </el-form-item>
           <el-form-item label="是否必填">
             <el-switch v-model="form.isRequired" active-color="#13ce66">
@@ -24,7 +43,7 @@
           <!-- 数字型字段信息 -->
           <el-form-item
             label="单位"
-            v-if="title.key === formElementType.number"
+            v-if="formElementType.number.includes(title.key)"
           >
             <el-input v-model="form.unit" placeholder="请输入"></el-input>
           </el-form-item>
@@ -67,17 +86,20 @@
             </p>
           </el-form-item>
           <!-- 日期型字段信息 -->
-          <template v-if="formElementType.date.includes(title.key)">
-            <el-form-item label="日期类型">
-              <el-select v-model="form.dateType" class="width-full">
-                <el-option
-                  v-for="item of dateTypes"
-                  :key="item.id"
-                  :value="item.format"
-                  :label="item.name"
-                ></el-option>
-              </el-select>
-            </el-form-item>
+          <el-form-item
+            v-if="formElementType.date.includes(title.key)"
+            label="日期类型"
+          >
+            <el-select v-model="form.dateType" class="width-full">
+              <el-option value="YYYY-MM-DD" label="年-月-日"></el-option>
+              <el-option
+                value="YYYY-MM-DD hh:mm"
+                label="年-月-日 时:分"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <!-- 日期区间 -->
+          <template v-if="formElementType.dateRange.includes(title.key)">
             <el-form-item label="自动计算时长">
               <el-switch v-model="form.autoDuration" active-color="#13ce66">
               </el-switch>
@@ -134,6 +156,7 @@ export default {
       }, // 标题信息
       form: {}, // 表单信息
       publicTemplate: {
+        fieldKey: "", // 字段标识
         label: "", // 标题
         placeholder: "请输入", // 提示
         isRequired: false, // 必填
@@ -156,19 +179,24 @@ export default {
         iconDel: "wl-shanchu",
       }, // checkbox选项模板
       dateTemplate: {
-        dateType: "", // 日期类型
+        dateType: "YYYY-MM-DD", // 日期类型
+        label2: "", // 标题2
         autoDuration: false, // 自动计算时长
         placeholder: "请选择", // 提示
         durationLabel: "时长", // 时长
       }, // 日期模板
-      dateTypes: [
-        { id: "dateType1", format: "YYYY-MM-DD", name: "年-月-日" },
-        { id: "dateType2", format: "YYYY-MM-DD hh:mm", name: "年-月-日 时:分" },
-      ], // 日期类型
       moneyTemplate: {
         placeholder: "请输入金额", // 提示
         autoCapital: true, // 自动显示大写
       }, // 金额类型
+      rate: {
+        scoringSystem: 5,
+      }, // 评分制
+      elseSelectType: [
+        "element-site",
+        "element-area",
+        "element-associatedForm",
+      ], // 其他需要选择的表单元素类型
     };
   },
   watch: {
@@ -196,30 +224,15 @@ export default {
           },
         ];
         // 组装当前字段元素表单
-        let unmberTemplate = {};
-        let checkboxTemplate = {};
-        let dateTemplate = {};
-        let moneyTemplate = {};
-        if (this.formElementType.number === val.key) {
-          unmberTemplate = this.unmberTemplate;
-        } else if (this.formElementType.checkbox.includes(val.key)) {
-          checkboxTemplate = this.checkboxTemplate;
-        } else if (this.formElementType.date.includes(val.key)) {
-          dateTemplate = this.dateTemplate;
-        } else if (this.formElementType.money.includes(val.key)) {
-          moneyTemplate = this.moneyTemplate;
-        }
-
+        const parseElementForm = this.parseElementCreateForm(val.key);
         this.form = {
           ...this.publicTemplate,
+          fieldKey: "fieldKey_" + new Date().getTime(),
           label: val.name,
           _key: val.key,
           _icon: val.icon,
           _id: val.id,
-          ...unmberTemplate,
-          ...checkboxTemplate,
-          ...dateTemplate,
-          ...moneyTemplate,
+          ...parseElementForm,
         };
       });
     },
@@ -248,6 +261,34 @@ export default {
     // 删除checkbox选项
     handleDelOption(item) {
       this.form.options = this.form.options.filter((i) => i.id != item.id);
+    },
+    // 分析不同元素产生不同表单
+    parseElementCreateForm(element) {
+      let formTemplate = {};
+      if (this.formElementType.number === element) {
+        // 数字输入框
+        formTemplate = this.unmberTemplate;
+      } else if (this.formElementType.checkbox.includes(element)) {
+        // 单选、多选
+        formTemplate = this.checkboxTemplate;
+      } else if (this.formElementType.date.includes(element)) {
+        // 日期、日期区间
+        formTemplate = this.dateTemplate;
+        if (this.formElementType.dateRange.includes(element)) {
+          // 日期区间
+          formTemplate.label = "开始时间";
+          formTemplate.label2 = "结束时间";
+        }
+      } else if (this.formElementType.money.includes(element)) {
+        // 金额输入框
+        formTemplate = this.moneyTemplate;
+      } else if (this.formElementType.rate.includes(element)) {
+        // 评分选择
+        formTemplate = this.rate;
+      } else if (this.elseSelectType.includes(element)) {
+        formTemplate.placeholder = "请选择";
+      }
+      return formTemplate;
     },
   },
 };

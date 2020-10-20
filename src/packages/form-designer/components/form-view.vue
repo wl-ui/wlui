@@ -21,19 +21,49 @@
                   class="draggable-item"
                   :class="{ 'field-active': activeId == item._id }"
                 >
-                  <p>{{ item.placeholder }}</p>
+                  <!-- 评分placeholder -->
+                  <p
+                    v-if="formElementType.rate.includes(item._key)"
+                    class="scoring-system-box"
+                  >
+                    <i
+                      v-for="idx of item.scoringSystem"
+                      :key="idx"
+                      class="iconfont wl-pingfen"
+                    ></i>
+                  </p>
+                  <p class="view-file-box" v-else-if="formElementType.file.includes(item._key)">
+                    <i class="iconfont wl-jia view-file-icon"></i>
+                  </p>
+                  <!-- 正常placeholder -->
+                  <p v-else>
+                    {{ item.placeholder }}
+                    <i
+                      v-if="formElementType.select.includes(item._key)"
+                      class="iconfont wl-you float-right"
+                    ></i>
+                  </p>
+                  <!-- 金额 -->
                   <p
                     v-if="formElementType.money.includes(item._key)"
                     class="form-item-des"
                   >
                     大写
                   </p>
-                  <p
-                    v-else-if="formElementType.date.includes(item._key)"
-                    class="form-item-des"
+                  <!-- 日期区间 -->
+                  <div
+                    v-else-if="formElementType.dateRange.includes(item._key)"
                   >
-                    {{ item.durationLabel }}
-                  </p>
+                    <h3 class="form-item-title2">{{ item.label2 }}</h3>
+                    <p>
+                      {{ item.placeholder }}
+                      <i
+                        v-if="formElementType.select.includes(item._key)"
+                        class="iconfont wl-you float-right"
+                      ></i>
+                    </p>
+                    <p class="form-item-des">{{ item.durationLabel }}</p>
+                  </div>
                 </el-form-item>
                 <p class="item-del-box" @click.stop="handleFormJsonDel(item)">
                   <i class="iconfont wl-shanchu"></i>
@@ -187,6 +217,23 @@ export default {
     .form-item-des {
       color: $form-label-color;
       font-size: 12px;
+    }
+    .form-item-title2 {
+      color: $form-label-color;
+    }
+    .scoring-system-box {
+      display: flex;
+      justify-content: space-between;
+    }
+    .view-file-box{
+      width: 60px;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      background: $form-bg;
+      >.view-file-icon{
+        font-size: 20px;
+      }
     }
   }
   .field-active {

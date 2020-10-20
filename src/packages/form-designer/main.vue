@@ -48,6 +48,12 @@
 </template>
 
 <script>
+/**
+ * @name 表单生成器
+ * @author weilan
+ * @time 2020-10-13
+ * @description 导出表单json数据，配合表单解释器使用更便捷
+ */
 import FormElement from "./components/form-element"; // 导入表单元素组件
 import FormInfo from "./components/form-info"; // 导入表单字段描述组件
 import FormView from "./components/form-view"; // 导入表单效果组件
@@ -60,10 +66,24 @@ export default {
     return {
       layout: { preview: false }, // 视图管理
       formElementType: {
-        number: "element-3",
-        checkbox: ["element-4", "element-5"],
-        date: ["element-6", "element-7"],
-        money: ["element-10"],
+        number: ["element-numberInput"], // 数字输入框
+        checkbox: ["element-checkbox", "element-radio"], // 单选多选
+        date: ["element-date", "element-dateRange"], // 日期、日期区间
+        dateRange: ["element-dateRange"], // 日期区间
+        money: ["element-money"], // 金额输入框
+        rate: ["element-rate"], // 评分
+        file: ["element-file"], // 附件
+        select: [
+          "element-checkbox",
+          "element-radio",
+          "element-date",
+          "element-dateRange",
+          "element-contact",
+          "element-department",
+          "element-site",
+          "element-area",
+          "element-associatedForm",
+        ], // 选择型表单
       }, // 表单元素类型，用于显示不同字段信息
       formJson: [], // 表单json
     };
@@ -121,8 +141,8 @@ export default {
   }
 
   .form-designer-body {
-    display: flex;
     flex: 1;
+    display: flex;
     background: $form-bg;
     overflow: hidden;
   }

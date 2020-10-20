@@ -22,12 +22,12 @@
 </template>
 
 <script>
-import { WlFormDesigner } from "weilan-ui";
+import { FormDesigner } from "weilan-ui";
 import "weilan-ui.css"
 
 export default {
   name: "PageForm",
-  components: { WlFormDesigner },
+  components: { FormDesigner },
   data() {
     return {};
   },

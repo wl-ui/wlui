@@ -24,12 +24,12 @@
 </template>
 
 <script>
-import { WlFormParser } from "weilan-ui";
+import { FormParser } from "weilan-ui";
 import "weilan-ui.css"
 
 export default {
   name: "PageForm",
-  components: { WlFormParser },
+  components: { FormParser },
   data() {
     return {
       code:[]

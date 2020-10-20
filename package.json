@@ -1,6 +1,6 @@
 {
   "name": "weilan-ui",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": false,
   "author": "weilan<https://github.com/wl-ui>",
   "scripts": {
@@ -25,12 +25,14 @@
     "@vue/cli-service": "~4.4.0",
     "babel-eslint": "^10.1.0",
     "babel-plugin-component": "^1.1.1",
+    "babel-plugin-import": "^1.13.1",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.14.1",
     "sass-loader": "^9.0.0",
+    "vant": "^2.10.10",
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11",
     "vuepress": "^1.5.2",

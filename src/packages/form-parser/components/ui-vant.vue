@@ -1,21 +1,125 @@
 <template>
   <div class="ui-want">
-    <van-form @submit="onSubmit">
-      <van-field
-        v-for="item of code"
-        :key="item._id"
-        v-model="item.fieldKey"
-        :name="item.fieldKey"
-        :label="item.label"
-        :placeholder="item.placeholder"
-        :rules="[{ required: true, message: '请填写用户名' }]"
-      />
-      <div style="margin: 16px">
+    <van-form
+      validate-first
+      ref="vant-form"
+      @submit="onSubmit"
+      @failed="onFailed"
+    >
+      <!-- 表单元素解析区 -->
+      <div v-for="item of json" :key="item._id">
+        <!-- 输入框型 -->
+        <van-field
+          v-if="formTypeInput.includes(item._key)"
+          v-model="form[item.fieldKey]"
+          :name="item._id"
+          :label="item.label"
+          :placeholder="item.placeholder"
+          :rules="parseItemRules(item)"
+          :type="parseItemType(item)"
+        />
+        <!-- 点击型 -->
+        <van-field
+          v-else-if="formTypeClick.includes(item._key)"
+          readonly
+          clickable
+          :name="item._id"
+          :label="item.label"
+          :placeholder="item.placeholder"
+          @click="formDateClick(item)"
+        />
+        <!-- 日期区间 -->
+        <template v-else-if="formElementType.dateRange == item._key">
+          <van-field
+            readonly
+            clickable
+            :name="item._id"
+            :label="item.label"
+            :placeholder="item.placeholder"
+            @click="formDateClick(item)"
+          />
+          <van-field
+            readonly
+            clickable
+            :name="item._id"
+            :label="item.label2"
+            :placeholder="item.placeholder"
+            @click="formDateClick(item)"
+          />
+        </template>
+        <!-- 插槽型 -->
+        <van-field v-else :name="item._id" :label="item.label">
+          <template #input>
+            <!-- 多选框 -->
+            <van-checkbox-group
+              v-if="formElementType.checkbox === item._key"
+              v-model="form[item.fieldKey]"
+              direction="horizontal"
+            >
+              <van-checkbox
+                v-for="checkbox of item.options"
+                :key="checkbox.id"
+                checked-color="#07c160"
+                :name="checkbox.name"
+                >{{ checkbox.name }}</van-checkbox
+              >
+            </van-checkbox-group>
+            <!-- 单选框 -->
+            <van-radio-group
+              v-if="formElementType.radio === item._key"
+              v-model="form[item.fieldKey]"
+              direction="horizontal"
+            >
+              <van-radio
+                v-for="checkbox of item.options"
+                :key="checkbox.id"
+                checked-color="#07c160"
+                :name="checkbox.name"
+                >{{ checkbox.name }}</van-radio
+              >
+            </van-radio-group>
+            <!-- 评分 -->
+            <van-rate
+              v-if="formElementType.rate === item._key"
+              v-model="form[item.fieldKey]"
+              :count="item.scoringSystem"
+              color="#ffd21e"
+            />
+            <!-- 附件 -->
+            <van-uploader
+              v-if="formElementType.file === item._key"
+              v-model="form[item.fieldKey]"
+            />
+          </template>
+        </van-field>
+      </div>
+      <!-- 表单元素插槽区 -->
+      <slot></slot>
+      <!-- 表单元素提交按钮 -->
+      <div class="submit-box" v-if="submitBtn">
         <van-button round block type="info" native-type="submit">
           提交
         </van-button>
       </div>
     </van-form>
+    <!-- 日期选择 弹出 -->
+    <van-popup v-model="layout.popup">
+      <van-datetime-picker
+        v-if="formElementType.date.includes(layout.el)"
+        v-model="dateInfo.value"
+        :title="dateInfo.title"
+        type="date"
+        @confirm="handleDateConfirm"
+        @cancel="handlePopupCancel"
+      />
+      <van-area
+        v-else
+        v-model="areaInfo.value"
+        :title="areaInfo.title"
+        @confirm="handleAreaConfirm"
+        @cancel="handlePopupCancel"
+      />
+    </van-popup>
   </div>
 </template>
 
@@ -23,22 +127,146 @@
 export default {
   name: "UiVant",
   props: {
-    code: Array,
+    json: Array,
+    submitBtn: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
-      username: "",
-      password: "",
+      layout: { popup: false, el: "" },
+      form: {}, // 表单集
+      formTypeInput: [
+        "element-input",
+        "element-textarea",
+        "element-phone",
+        "element-numberInput",
+        "element-password",
+      ], // 输入框型的表单元素
+      formTypeClick: ["element-date", "element-area"], // 需点击事件触发其他操作的表单元素
+      formElementType: {
+        checkbox: "element-checkbox",
+        radio: "element-radio",
+        date: ["element-date", "element-dateRange"],
+        dateRange: "element-dateRange",
+        rate: "element-rate", // 评分
+        file: "element-file", // 文件
+      }, // 表单元素类型，用于显示不同字段信息
+      dateInfo: {
+        value: "",
+        type: "",
+        title: "",
+        key: "",
+      }, // 日期弹出信息
+      areaInfo: {
+        value: "",
+        title: "",
+        areaList: {},
+        key: "",
+      }, // 地址弹出信息
     };
   },
   methods: {
-    // 表单提交
-    onSubmit() {},
+    // 验证成功表单提交
+    onSubmit() {
+      this.$emit("submit", this.form);
+    },
+    // 验证失败
+    onFailed(err) {
+      this.$emit("failed", err);
+    },
+    // 点击型表单元素
+    formDateClick(item) {
+      this.layout.popup = true;
+      this.layout.el = item._key;
+      if (this.formElementType.date.includes(item._key)) {
+        // this.dateInfo.title = item.label;
+        this.dateInfo.value = "";
+        this.dateInfo.type =
+          item.dateType == "YYYY-MM-DD" ? "date" : "datetime";
+        this.dateInfo.key = item.fieldKey;
+      } else {
+        // this.areaInfo.title = item.label;
+        this.areaInfo.value = "";
+        this.areaInfo.key = item.fieldKey;
+      }
+    },
+    // 日期选择完毕时间
+    handleDateConfirm(val) {
+      this.form[this.dateInfo.key] = val;
+      this.handlePopupCancel();
+    },
+    // 省市县选择完毕
+    handleAreaConfirm(val) {
+      this.form[this.areaInfo.key] = val;
+      this.handlePopupCancel();
+    },
+    // 关闭弹出框
+    handlePopupCancel() {
+      this.layout.popup = false;
+    },
+    // 解析表单校验规则
+    parseItemRules(item) {
+      let rules = [];
+      if (item.isRequired) {
+        rules.push({ required: true });
+      }
+      if (item.diyRegular) {
+        rules.push({ pattern: item.diyRegular, message: item.diyErrMsg });
+      }
+      return rules;
+    },
+    // 解析表单元素类型
+    parseItemType(item) {
+      let type = "";
+      switch (item._key) {
+        case "element-textarea":
+          type = "textarea";
+          break;
+        case "element-phone":
+          type = "tel";
+          break;
+        case "element-numberInput":
+          type = "number";
+          break;
+        case "element-password":
+          type = "password";
+          break;
+        default:
+          type = "";
+      }
+      return type;
+    },
+    // 获取popup挂载的dom节点
+    getPopupBoxContainer() {
+      return document.querySelector("#popup-box");
+    },
+    // --------------------------------------- 原ui表单方法 -----------------------------
+    // 提交
+    submit() {
+      this.$refs["vant-form"].submit();
+    },
+    // 验证表单，支持传入name来验证单个表单项
+    validate(name) {
+      this.$refs["vant-form"].validate(name);
+    },
+    // 重置表单项的验证提示，支持传入name来重置单个表单项
+    resetValidation(name) {
+      this.$refs["vant-form"].resetValidation(name);
+    },
+    // 滚动到对应表单项的位置，默认滚动到顶部，第二个参数传 false 可滚动至底部
+    scrollToField(name, alignToTop) {
+      this.$refs["vant-form"].scrollToField(name, alignToTop);
+    },
   },
 };
 </script>
 
 <style lang="scss">
 .ui-want {
+  .submit-box {
+    margin-top: 16px;
+  }
 }
 </style>

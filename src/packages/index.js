@@ -15,8 +15,9 @@ import Explorer from "./explorer";
 import Gantt from "./gantt";
 import Tree from "./tree";
 import FormDesigner from "./form-designer";
+import FormParser from "./form-parser";
 
-const components = [Select, SelectTree, TransferTree, Address, Add, Input, Container, ContextMenu, FadeIn, Scroll, Table, TableDynamic, BimViewer, Explorer, Gantt, Tree, FormDesigner];
+const components = [Select, SelectTree, TransferTree, Address, Add, Input, Container, ContextMenu, FadeIn, Scroll, Table, TableDynamic, BimViewer, Explorer, Gantt, Tree, FormDesigner, FormParser];
 
 const install = function (Vue) {
   components.forEach(component => {
@@ -29,11 +30,11 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export {
-  Select, SelectTree, TransferTree, Address, Add, Input, Container, ContextMenu, FadeIn, Scroll, Table, TableDynamic, BimViewer, Explorer, Gantt, Tree, FormDesigner
+  Select, SelectTree, TransferTree, Address, Add, Input, Container, ContextMenu, FadeIn, Scroll, Table, TableDynamic, BimViewer, Explorer, Gantt, Tree, FormDesigner, FormParser
 }
 
 export default {
   install,
-  Select, SelectTree, TransferTree, Address, Add, Input, Container, ContextMenu, FadeIn, Scroll, Table, TableDynamic, BimViewer, Explorer, Gantt, Tree, FormDesigner
+  Select, SelectTree, TransferTree, Address, Add, Input, Container, ContextMenu, FadeIn, Scroll, Table, TableDynamic, BimViewer, Explorer, Gantt, Tree, FormDesigner, FormParser
 };
 

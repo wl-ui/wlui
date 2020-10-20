@@ -6,6 +6,13 @@
   "description": "wl-ui项目图标库",
   "glyphs": [
     {
+      "icon_id": "7533277",
+      "name": "密码",
+      "font_class": "mima",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
       "icon_id": "1115039",
       "name": "关闭",
       "font_class": "guanbi",
