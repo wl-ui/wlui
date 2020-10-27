@@ -18,12 +18,14 @@
             <el-input v-model="form.label"></el-input>
           </el-form-item>
           <!-- 日期区间 -->
-          <el-form-item
-            label="标题2"
-            v-if="formElementType.dateRange.includes(title.key)"
-          >
-            <el-input v-model="form.label2"></el-input>
-          </el-form-item>
+          <template v-if="formElementType.dateRange.includes(title.key)">
+            <el-form-item label="字段标识2">
+              <el-input v-model="form.fieldKey2"></el-input>
+            </el-form-item>
+            <el-form-item label="标题2">
+              <el-input v-model="form.label2"></el-input>
+            </el-form-item>
+          </template>
           <!-- 正常提示文字 -->
           <el-form-item
             label="提示文字"
@@ -181,7 +183,8 @@ export default {
       dateTemplate: {
         dateType: "YYYY-MM-DD", // 日期类型
         label2: "", // 标题2
-        autoDuration: false, // 自动计算时长
+        fieldKey2: "", // 字段标识2
+        autoDuration: true, // 自动计算时长
         placeholder: "请选择", // 提示
         durationLabel: "时长", // 时长
       }, // 日期模板
@@ -278,6 +281,7 @@ export default {
           // 日期区间
           formTemplate.label = "开始时间";
           formTemplate.label2 = "结束时间";
+          formTemplate.fieldKey2 = "fieldKey2_" + new Date().getTime();
         }
       } else if (this.formElementType.money.includes(element)) {
         // 金额输入框

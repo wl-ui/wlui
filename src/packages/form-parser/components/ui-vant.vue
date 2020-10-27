@@ -21,6 +21,7 @@
         <!-- 点击型 -->
         <van-field
           v-else-if="formTypeClick.includes(item._key)"
+          v-model="form[item.fieldKey]"
           readonly
           clickable
           :name="item._id"
@@ -31,6 +32,7 @@
         <!-- 日期区间 -->
         <template v-else-if="formElementType.dateRange == item._key">
           <van-field
+            v-model="form[item.fieldKey]"
             readonly
             clickable
             :name="item._id"
@@ -39,12 +41,19 @@
             @click="formDateClick(item)"
           />
           <van-field
+            v-model="form[item.fieldKey2]"
             readonly
             clickable
             :name="item._id"
             :label="item.label2"
             :placeholder="item.placeholder"
-            @click="formDateClick(item)"
+            @click="formDateClick(item, item.fieldKey2)"
+          />
+          <van-field
+            v-if="item.autoDuration"
+            :label="durationLabel(item)"
+            :value="dateInfo.duration"
+            disabled
           />
         </template>
         <!-- 插槽型 -->
@@ -106,9 +115,9 @@
     <van-popup v-model="layout.popup">
       <van-datetime-picker
         v-if="formElementType.date.includes(layout.el)"
-        v-model="dateInfo.value"
+        v-model="dateInfo.currentDate"
         :title="dateInfo.title"
-        type="date"
+        :type="dateInfo.type"
         @confirm="handleDateConfirm"
         @cancel="handlePopupCancel"
       />
@@ -116,6 +125,7 @@
         v-else
         v-model="areaInfo.value"
         :title="areaInfo.title"
+        :area-list="areaList"
         @confirm="handleAreaConfirm"
         @cancel="handlePopupCancel"
       />
@@ -124,6 +134,9 @@
 </template>
 
 <script>
+import { Time } from "wl-core";
+import areaList from "../assets/js/area-data";
+
 export default {
   name: "UiVant",
   props: {
@@ -136,6 +149,7 @@ export default {
   data() {
     return {
       layout: { popup: false, el: "" },
+      areaList, // 省市县插件地址数据
       form: {}, // 表单集
       formTypeInput: [
         "element-input",
@@ -154,10 +168,16 @@ export default {
         file: "element-file", // 文件
       }, // 表单元素类型，用于显示不同字段信息
       dateInfo: {
+        currentDate: new Date(),
         value: "",
+        value2: "",
+        duration: "", // 时长
+        unit: "", // 单位 d天 h时
         type: "",
-        title: "",
+        title: "", // 标题
         key: "",
+        format: "", // 格式
+        act: null, // 当前是开始时间还是结束时间选择 1开始2结束
       }, // 日期弹出信息
       areaInfo: {
         value: "",
@@ -177,29 +197,59 @@ export default {
       this.$emit("failed", err);
     },
     // 点击型表单元素
-    formDateClick(item) {
+    formDateClick(item, key) {
       this.layout.popup = true;
       this.layout.el = item._key;
       if (this.formElementType.date.includes(item._key)) {
         // this.dateInfo.title = item.label;
-        this.dateInfo.value = "";
-        this.dateInfo.type =
-          item.dateType == "YYYY-MM-DD" ? "date" : "datetime";
-        this.dateInfo.key = item.fieldKey;
+        // this.dateInfo.value = "";
+        // this.dateInfo.value2 = "";
+        // 记录插件时间类型和计算时长时的单位
+        if (item.dateType == "YYYY-MM-DD") {
+          this.dateInfo.type = "date";
+          this.dateInfo.unit = "d";
+        } else {
+          this.dateInfo.type = "datetime";
+          this.dateInfo.unit = "h";
+        }
+        // 处理时间段两个点的逻辑
+        if (key) {
+          this.dateInfo.key = key;
+          this.dateInfo.act = 2;
+        } else {
+          this.dateInfo.key = item.fieldKey;
+          this.dateInfo.act = 1;
+        }
+        this.dateInfo.format = item.dateType;
       } else {
         // this.areaInfo.title = item.label;
-        this.areaInfo.value = "";
+        // this.areaInfo.value = "";
         this.areaInfo.key = item.fieldKey;
       }
     },
     // 日期选择完毕时间
     handleDateConfirm(val) {
-      this.form[this.dateInfo.key] = val;
+      let format = Time.quickFormat(val, this.dateInfo.format);
+      this.form[this.dateInfo.key] = format;
+      if (this.dateInfo.act === 2) {
+        this.dateInfo.value2 = val;
+        // 计算时长
+        if (this.dateInfo.value) {
+          const timer = new Time(val);
+          this.dateInfo.duration = timer.diff(
+            this.dateInfo.value,
+            this.dateInfo.unit
+          );
+        }
+      } else {
+        this.dateInfo.value = val;
+      }
       this.handlePopupCancel();
     },
     // 省市县选择完毕
     handleAreaConfirm(val) {
-      this.form[this.areaInfo.key] = val;
+      let [{ name: a }, { name: b }, { name: c }] = val;
+      this.form[this.areaInfo.key] = `${a} ${b} ${c}`;
       this.handlePopupCancel();
     },
     // 关闭弹出框
@@ -228,6 +278,7 @@ export default {
           type = "tel";
           break;
         case "element-numberInput":
+        case "element-money":
           type = "number";
           break;
         case "element-password":
@@ -237,6 +288,12 @@ export default {
           type = "";
       }
       return type;
+    },
+    // 自动计算时长单位
+    durationLabel(item) {
+      return item.dateType == "YYYY-MM-DD"
+        ? `${item.durationLabel}(天)`
+        : `${item.durationLabel}(时)`;
     },
     // 获取popup挂载的dom节点
     getPopupBoxContainer() {
