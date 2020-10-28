@@ -21,10 +21,11 @@
  */
 import UiVant from "./components/ui-vant";
 import UiElement from "./components/ui-element";
+// import UiUview from "./components/ui-uview";
 
 export default {
   name: "WlFormParser",
-  components: { UiVant, UiElement },
+  components: { UiVant, UiElement/* , UiUview */ },
   props: {
     ui: {
       type: String,
@@ -32,7 +33,7 @@ export default {
       required: true,
       validator: function (value) {
         // 这个值必须匹配下列字符串中的一个
-        return ["element", "vant"].indexOf(value) !== -1;
+        return ["element", "vant", "uview"].indexOf(value) !== -1;
       },
     },
     json: {
