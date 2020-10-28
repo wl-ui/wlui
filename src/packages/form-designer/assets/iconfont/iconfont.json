@@ -6,6 +6,13 @@
   "description": "wl-ui项目图标库",
   "glyphs": [
     {
+      "icon_id": "5875579",
+      "name": "select",
+      "font_class": "select",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
       "icon_id": "7533277",
       "name": "密码",
       "font_class": "mima",
