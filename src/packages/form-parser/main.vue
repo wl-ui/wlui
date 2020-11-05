@@ -21,7 +21,7 @@
  */
 import UiVant from "./components/ui-vant";
 import UiElement from "./components/ui-element";
-// import UiUview from "./components/ui-uview";
+// import UiUview from "./components/ui-uview"; // uview组件建议复制源码至你的项目
 
 export default {
   name: "WlFormParser",

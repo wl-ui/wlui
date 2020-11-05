@@ -59,34 +59,6 @@
         <!-- 插槽型 -->
         <van-field v-else :name="item._id" :label="item.label">
           <template #input>
-            <!-- 多选框 -->
-            <van-checkbox-group
-              v-if="formElementType.checkbox === item._key"
-              v-model="form[item.fieldKey]"
-              direction="horizontal"
-            >
-              <van-checkbox
-                v-for="checkbox of item.options"
-                :key="checkbox.id"
-                checked-color="#07c160"
-                :name="checkbox.name"
-                >{{ checkbox.name }}</van-checkbox
-              >
-            </van-checkbox-group>
-            <!-- 单选框 -->
-            <van-radio-group
-              v-if="formElementType.radio === item._key"
-              v-model="form[item.fieldKey]"
-              direction="horizontal"
-            >
-              <van-radio
-                v-for="checkbox of item.options"
-                :key="checkbox.id"
-                checked-color="#07c160"
-                :name="checkbox.name"
-                >{{ checkbox.name }}</van-radio
-              >
-            </van-radio-group>
             <!-- 评分 -->
             <van-rate
               v-if="formElementType.rate === item._key"
@@ -112,7 +84,11 @@
       </div>
     </van-form>
     <!-- 日期选择 弹出 -->
-    <van-popup v-model="layout.popup">
+    <van-popup
+      v-model="layout.popup"
+      position="bottom"
+      :style="{ height: '40%' }"
+    >
       <van-datetime-picker
         v-if="formElementType.date.includes(layout.el)"
         v-model="dateInfo.currentDate"
@@ -121,6 +97,43 @@
         @confirm="handleDateConfirm"
         @cancel="handlePopupCancel"
       />
+      <!-- 选项型 -->
+      <div
+        class="popup-select-box"
+        v-else-if="formElementType.select.includes(layout.el)"
+      >
+        <!-- 单选框 -->
+        <van-radio-group
+          v-if="formElementType.radio === layout.el"
+          v-model="selectInfo.value"
+          @change="handelRadioChange"
+        >
+          <van-radio
+            v-for="checkbox of selectInfo.options"
+            :key="checkbox.id"
+            :name="checkbox.name"
+            checked-color="#07c160"
+            class="popup-select-item"
+            >{{ checkbox.name }}</van-radio
+          >
+        </van-radio-group>
+        <!-- 多选框 -->
+        <van-checkbox-group
+          v-else
+          v-model="selectInfo.values"
+          @change="handelCheckboxChange"
+        >
+          <van-checkbox
+            v-for="checkbox of selectInfo.options"
+            :key="checkbox.id"
+            :name="checkbox.name"
+            checked-color="#07c160"
+            class="popup-select-item"
+            >{{ checkbox.name }}</van-checkbox
+          >
+        </van-checkbox-group>
+      </div>
+      <!-- 地区选择 -->
       <van-area
         v-else
         v-model="areaInfo.value"
@@ -158,8 +171,14 @@ export default {
         "element-numberInput",
         "element-password",
       ], // 输入框型的表单元素
-      formTypeClick: ["element-date", "element-area"], // 需点击事件触发其他操作的表单元素
+      formTypeClick: [
+        "element-date",
+        "element-area",
+        "element-checkbox",
+        "element-radio",
+      ], // 需点击事件触发其他操作的表单元素
       formElementType: {
+        select: ["element-radio", "element-checkbox"],
         checkbox: "element-checkbox",
         radio: "element-radio",
         date: ["element-date", "element-dateRange"],
@@ -185,6 +204,12 @@ export default {
         areaList: {},
         key: "",
       }, // 地址弹出信息
+      selectInfo: {
+        key: "",
+        value: null,
+        values: [],
+        options: [],
+      }, // 选择弹出信息
     };
   },
   methods: {
@@ -201,9 +226,6 @@ export default {
       this.layout.popup = true;
       this.layout.el = item._key;
       if (this.formElementType.date.includes(item._key)) {
-        // this.dateInfo.title = item.label;
-        // this.dateInfo.value = "";
-        // this.dateInfo.value2 = "";
         // 记录插件时间类型和计算时长时的单位
         if (item.dateType == "YYYY-MM-DD") {
           this.dateInfo.type = "date";
@@ -221,9 +243,10 @@ export default {
           this.dateInfo.act = 1;
         }
         this.dateInfo.format = item.dateType;
+      } else if (this.formElementType.select.includes(item._key)) {
+        this.selectInfo.key = item.fieldKey;
+        this.selectInfo.options = item.options;
       } else {
-        // this.areaInfo.title = item.label;
-        // this.areaInfo.value = "";
         this.areaInfo.key = item.fieldKey;
       }
     },
@@ -245,6 +268,14 @@ export default {
         this.dateInfo.value = val;
       }
       this.handlePopupCancel();
+    },
+    // 单选选择完毕
+    handelRadioChange(val) {
+      this.form[this.selectInfo.key] = val;
+    },
+    // 多选选择完毕
+    handelCheckboxChange(val) {
+      this.form[this.selectInfo.key] = val.join();
     },
     // 省市县选择完毕
     handleAreaConfirm(val) {
@@ -295,10 +326,6 @@ export default {
         ? `${item.durationLabel}(天)`
         : `${item.durationLabel}(时)`;
     },
-    // 获取popup挂载的dom节点
-    getPopupBoxContainer() {
-      return document.querySelector("#popup-box");
-    },
     // --------------------------------------- 原ui表单方法 -----------------------------
     // 提交
     submit() {
@@ -324,6 +351,12 @@ export default {
 .ui-want {
   .submit-box {
     margin-top: 16px;
+  }
+  .popup-select-box {
+    padding: 20px;
+    .popup-select-item {
+      margin-bottom: 15px;
+    }
   }
 }
 </style>
