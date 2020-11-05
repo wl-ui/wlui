@@ -214,8 +214,8 @@ export default {
   },
   methods: {
     // 验证成功表单提交
-    onSubmit() {
-      this.$emit("submit", this.form);
+    onSubmit(val) {
+      this.$emit("submit", val, this.getForm());
     },
     // 验证失败
     onFailed(err) {
@@ -326,7 +326,26 @@ export default {
         ? `${item.durationLabel}(天)`
         : `${item.durationLabel}(时)`;
     },
-    // --------------------------------------- 原ui表单方法 -----------------------------
+    // --------------------------------------- 方法 --------------------------------
+    // 获取表单内容
+    getForm() {
+      let submit_form_json = [];
+      for (const iterator of this.json) {
+        submit_form_json.push({
+          label: iterator.label,
+          key: iterator.fieldKey,
+          value: this.form[iterator.fieldKey] || null,
+        });
+        if (iterator._key == this.formElementType.dateRange) {
+          submit_form_json.push({
+            label: iterator.label2,
+            key: iterator.fieldKey2,
+            value: this.form[iterator.fieldKey2] || null,
+          });
+        }
+      }
+      return submit_form_json;
+    },
     // 提交
     submit() {
       this.$refs["vant-form"].submit();
