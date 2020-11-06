@@ -46,21 +46,24 @@ new Vue({
 > 完整的组件列表
 ```js
 import {
-  WlSelect, 
-  WlSelectTree, 
-  WlTransferTree, 
-  WlAddress, 
-  WlAdd, 
-  WlInput, 
-  WlContainer, 
-  WlContextMenu, 
-  WlFadeIn, 
-  WlScroll, 
-  WlTableDynamic, 
-  WlBimViewer, 
-  WlExplorer, 
-  WlGantt,
-  WlFormDesigner
+  Gantt, 
+  Explorer, 
+  BimViewer, 
+  TransferTree, 
+  FormDesigner
+  FormParser
+  Container, 
+  ContextMenu, 
+  FadeIn, 
+  Scroll, 
+  Address, 
+  Add, 
+  Input, 
+  Select, 
+  SelectTree, 
+  Tree, 
+  Table, 
+  TableDynamic, 
 } from 'weilan-ui';
 ```
 
