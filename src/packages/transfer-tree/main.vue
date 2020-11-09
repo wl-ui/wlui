@@ -222,7 +222,7 @@
               class="filter-tree"
             ></el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
+              <li class="address-list-li" v-for="item of selfSjr" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
@@ -249,7 +249,7 @@
               class="filter-tree"
             ></el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of Cc" :key="item[node_key]">
+              <li class="address-list-li" v-for="item of selfCsr" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
@@ -281,7 +281,7 @@
               class="filter-tree"
             ></el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
+              <li class="address-list-li" v-for="item of selfMsr" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
@@ -939,7 +939,23 @@ export default {
       }
       let [, text] = this.button_text;
       return text;
-    }
+    },
+     // 收件人
+    selfSjr() {
+      return Array.isArray(this.sjr)
+        ? this.sjr.concat(this.addressee)
+        : this.addressee;
+    },
+    // 抄送人
+    selfCsr() {
+      return Array.isArray(this.csr) ? this.sjr.concat(this.Cc) : this.Cc;
+    },
+    // 密送人
+    selfMsr() {
+      return Array.isArray(this.msr)
+        ? this.sjr.concat(this.secret_receiver)
+        : this.secret_receiver;
+    },
   },
   watch: {
     // 左侧 状态监测

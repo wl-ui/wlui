@@ -11,7 +11,12 @@
       v-model="options_show"
     >
       <el-scrollbar class="wl-treeselect-popover">
-        <el-input v-if="filterable" v-model="filterText" :size="size" placeholder="请输入关键词"></el-input>
+        <el-input
+          v-if="filterable"
+          v-model="filterText"
+          :size="size"
+          placeholder="请输入关键词"
+        ></el-input>
         <el-tree
           ref="tree-select"
           class="wl-options-tree"
@@ -20,10 +25,11 @@
           :props="selfProps"
           :node-key="nodeKey"
           :show-checkbox="checkbox"
-          :expand-on-click-node="false"
+          :check-strictly="checkStrictly"
           :filter-node-method="filterNode"
           :default-checked-keys="checked_keys"
           :default-expand-all="defaultExpandAll"
+          :expand-on-click-node="expandOnClickNode"
           :default-expanded-keys="defaultExpandedKeys"
           @check="handleCheckChange"
           @node-click="treeItemClick"
@@ -33,7 +39,7 @@
       <div
         slot="reference"
         class="selected-box"
-        :class="[{'wl-disabled': disabled, 'no-wrap': nowrap }, sizeClass]"
+        :class="[{ 'wl-disabled': disabled, 'no-wrap': nowrap }, sizeClass]"
       >
         <div class="tag-box">
           <div v-show="selecteds.length > 0">
@@ -46,7 +52,8 @@
                 :title="item[selfProps.label]"
                 :key="item[nodeKey]"
                 @close="tabClose(item[nodeKey])"
-              >{{ item[selfProps.label] }}</el-tag>
+                >{{ item[selfProps.label] }}</el-tag
+              >
             </template>
             <template v-else>
               <el-tag
@@ -55,15 +62,19 @@
                 class="wl-select-tag"
                 :title="collapseTagsItem[selfProps.label]"
                 @close="tabClose(collapseTagsItem[nodeKey])"
-              >{{ collapseTagsItem[selfProps.label] }}</el-tag>
+                >{{ collapseTagsItem[selfProps.label] }}</el-tag
+              >
               <el-tag
-                v-if="this.selecteds.length>1"
+                v-if="this.selecteds.length > 1"
                 :size="size"
                 class="wl-select-tag"
-              >+{{ this.selecteds.length-1}}</el-tag>
+                >+{{ this.selecteds.length - 1 }}</el-tag
+              >
             </template>
           </div>
-          <p class="wl-placeholder-box" v-show="selecteds.length == 0">{{placeholder}}</p>
+          <p class="wl-placeholder-box" v-show="selecteds.length == 0">
+            {{ placeholder }}
+          </p>
         </div>
         <div class="icon-box">
           <transition name="fade-rotate" mode="out-in">
@@ -101,97 +112,107 @@ export default {
       options_show: false, // 是否显示下拉选项
       checked_keys: [], // 默认选中
       guid: "00000000-0000-0000-0000-000000000000",
-      filterText: ""
+      filterText: "",
     };
   },
   props: {
     // 数据
     data: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     // 树结构配置
     props: {
       type: Object,
       default: () => {
         return {};
-      }
+      },
     },
     // node-key
     nodeKey: {
       type: String,
-      default: "id"
+      default: "id",
     },
     // 选中数据
     value: [String, Number, Array, Object],
     // 是否可多选
     checkbox: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 多选时是否将选中值按文字的形式展示
     collapseTags: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 是否只可选叶子节点
     leaf: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 宽度
     width: String,
     // 触发方式 click/focus/hover/manual
     trigger: {
       type: String,
-      default: "click"
+      default: "click",
     },
     // 是否禁用
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 是否允许多行显示
     nowrap: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 多选时，清空选项关闭
     noCheckedClose: {
       type: Boolean,
-      default: false
+      default: false,
     },
     placeholder: {
       type: String,
-      default: "请选择"
+      default: "请选择",
     },
     size: {
       type: String,
-      default: "medium"
+      default: "medium",
     },
     //是否展开全部
     defaultExpandAll: {
       type: Boolean,
-      default: true
+      default: true,
     },
     //默认展开的节点的 key 的数组
     defaultExpandedKeys: {
       type: Array,
       default: () => {
         return [];
-      }
+      },
     },
     // 是否使用搜索
     filterable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 自定义筛选函数
-    filterFnc: Function
+    filterFnc: Function,
+    // 是否父子不关联
+    checkStrictly: {
+      type: Boolean,
+      default: false,
+    },
+    // 是否点击节点展开收缩
+    expandOnClickNode: {
+      type: Boolean,
+      default: false,
+    },
   },
   model: {
     prop: "value", //这里使我们定义的v-model属性
-    event: "change"
+    event: "change",
   },
   methods: {
     // 树节点-checkbox选中
@@ -246,7 +267,7 @@ export default {
       // 多选处理
       if (this.checkbox) {
         this.checked_keys = DataType.isObject(val[0])
-          ? val.map(i => i[this.nodeKey])
+          ? val.map((i) => i[this.nodeKey])
           : val;
         this.$nextTick(() => {
           this.selecteds = this.$refs["tree-select"].getCheckedNodes(this.leaf);
@@ -256,7 +277,7 @@ export default {
       // 单选处理
       let _val = Array.isArray(val) ? val[0] : val;
       if (DataType.isObject(_val)) {
-        console.log(1)
+        console.log(1);
         this.selecteds = [_val];
         this.$nextTick(() => {
           this.$refs["tree-select"].setCurrentNode(_val);
@@ -278,7 +299,7 @@ export default {
       if (this.filterFnc) return this.filterFnc(value, data);
       if (!value) return true;
       return data[this.selfProps.label].indexOf(value) !== -1;
-    }
+    },
   },
   created() {
     this.chaeckDefaultValue();
@@ -290,7 +311,7 @@ export default {
     // 树节点搜索
     filterText(val) {
       this.$refs["tree-select"].filter(val);
-    }
+    },
   },
   computed: {
     selfData() {
@@ -300,10 +321,10 @@ export default {
       return {
         label: "name",
         children: "children",
-        disabled: data => {
+        disabled: (data) => {
           return data.disabled;
         },
-        ...this.props
+        ...this.props,
       };
     },
     sizeClass() {
@@ -330,8 +351,8 @@ export default {
     // 开启collapseTags时首个选中值
     collapseTagsItem() {
       return this.selecteds[0] || {};
-    }
-  }
+    },
+  },
 };
 </script>
 

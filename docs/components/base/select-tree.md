@@ -266,7 +266,9 @@ export default {
   {name:'defaultExpandedKeys', des:' 默认展开的节点的 key 的数组', type: 'Array', optionValues:'-', defaultValue: '-'},
   {name:'filterable', des:' 是否使用搜索', type: 'Boolean', optionValues:'-', defaultValue: 'false'},
   {name:'filterFnc', des:' 自定义筛选函数', type: 'Function', optionValues:'-', defaultValue: '-'},
-  {name:'no-checked-close', des:'点击tag标签清空已选时，可选项列表将同时关闭', type: 'Boolean', optionValues:'-', defaultValue:'false'},
+  {name:'noCheckedClose', des:'点击tag标签清空已选时，可选项列表将同时关闭', type: 'Boolean', optionValues:'-', defaultValue:'false'},
+  {name:'checkStrictly', des:'树形时，是否父子不关联', type: 'Boolean', optionValues:'-', defaultValue:'false'},
+  {name:'expandOnClickNode', des:'树形时，是否点击节点能展开收缩', type: 'Boolean', optionValues:'-', defaultValue:'false'},
   {name:'-', des:'其他el-select属性', type: '-', optionValues:'-', defaultValue:'-'}
 ]"></common-api>
 
