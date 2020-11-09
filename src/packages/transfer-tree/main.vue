@@ -302,6 +302,9 @@ import { arrayToTree } from "wl-core";
 export default {
   name: "WlTransferTree",
   props: {
+    sjr: Array,
+    csr: Array,
+    msr: Array,
     // 宽度
     width: {
       type: String,
