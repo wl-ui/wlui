@@ -1,47 +1,47 @@
 @charset "UTF-8";
-.el-tree {
-  min-width: 100%;
-  display: inline-block !important;
-}
-
-.transfer {
+.wl-transfer {
   position: relative;
   overflow: hidden;
 }
 
-.transfer-left {
+.wl-transfer .el-tree {
+  min-width: 100%;
+  display: inline-block !important;
+}
+
+.wl-transfer .transfer-left {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.transfer-right {
+.wl-transfer .transfer-right {
   position: absolute;
   top: 0;
   right: 0;
 }
 
-.transfer-right-item {
+.wl-transfer .transfer-right-item {
   height: calc((100% - 41px) / 2);
 }
 
-.transfer-right-small {
+.wl-transfer .transfer-right-small {
   height: 41px;
 }
 
-.transfer-right-only {
+.wl-transfer .transfer-right-only {
   height: 100%;
 }
 
-.transfer-main {
+.wl-transfer .transfer-main {
   padding: 10px;
   height: calc(100% - 41px);
   box-sizing: border-box;
   overflow: auto;
 }
 
-.transfer-left,
-.transfer-right {
+.wl-transfer .transfer-left,
+.wl-transfer .transfer-right {
   border: 1px solid #ebeef5;
   width: 40%;
   height: 100%;
@@ -50,7 +50,7 @@
   vertical-align: middle;
 }
 
-.transfer-center {
+.wl-transfer .transfer-center {
   position: absolute;
   top: 50%;
   left: 40%;
@@ -59,35 +59,35 @@
   text-align: center;
 }
 
-.transfer-center-item {
+.wl-transfer .transfer-center-item {
   padding: 10px;
   overflow: hidden;
 }
 
-.address-list-center {
+.wl-transfer .address-list-center {
   height: 100%;
 }
 
-.address-list-center > .transfer-center-item {
+.wl-transfer .address-list-center > .transfer-center-item {
   height: 50%;
   padding: 70px 10px 0;
   box-sizing: border-box;
   overflow: hidden;
 }
 
-.address-list-center > .address-only-item {
+.wl-transfer .address-list-center > .address-only-item {
   height: 100%;
   position: relative;
 }
 
-.address-only-item > .address-first-btn {
+.wl-transfer .address-only-item > .address-first-btn {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.transfer-title {
+.wl-transfer .transfer-title {
   border-bottom: 1px solid #ebeef5;
   padding: 0 15px;
   height: 40px;
@@ -97,19 +97,19 @@
   background-color: #f5f7fa;
 }
 
-.transfer-title .el-checkbox {
+.wl-transfer .transfer-title .el-checkbox {
   margin-right: 10px;
 }
 
-.filter-tree {
+.wl-transfer .filter-tree {
   margin-bottom: 10px;
 }
 
-.address-list-ul {
+.wl-transfer .address-list-ul {
   padding-bottom: 20px;
 }
 
-.address-list-li {
+.wl-transfer .address-list-li {
   position: relative;
   padding: 4px 24px 4px 4px;
   border-radius: 3px;
@@ -121,15 +121,15 @@
   /*超出部分文字以...显示*/
 }
 
-.address-list-li:hover {
+.wl-transfer .address-list-li:hover {
   background-color: #f5f7fa;
 }
 
-.address-list-li:hover .address-list-del {
+.wl-transfer .address-list-li:hover .address-list-del {
   display: block;
 }
 
-.address-list-del {
+.wl-transfer .address-list-del {
   display: none;
   position: absolute;
   top: 50%;
@@ -145,14 +145,14 @@
   cursor: pointer;
 }
 
-.u-clear {
+.wl-transfer .u-clear {
   float: right;
   color: #67c23a;
   font-size: 14px;
   cursor: pointer;
 }
 
-.move_up_img {
+.wl-transfer .move_up_img {
   float: right;
   margin-top: 10px;
   width: 20px;
@@ -160,6 +160,6 @@
   cursor: pointer;
 }
 
-.move_down_img {
+.wl-transfer .move_down_img {
   transform: rotate(180deg);
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="transfer" :style="{ width, height }">
+  <div class="wl-transfer" :style="{ width, height }">
     <template v-if="mode == 'transfer'">
       <!-- 左侧穿梭框 原料框 -->
       <div class="transfer-left">
@@ -222,13 +222,13 @@
               class="filter-tree"
             ></el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of selfSjr" :key="item[node_key]">
+              <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
                   {{ item[addressOptions.suffix] }}
                 </label>
-                <i class="address-list-del" @click="clearList(0, item[node_key])">x</i>
+                <i class="address-list-del el-icon-delete" @click="clearList(0, item[node_key])"></i>
               </li>
             </ul>
           </div>
@@ -249,13 +249,13 @@
               class="filter-tree"
             ></el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of selfCsr" :key="item[node_key]">
+              <li class="address-list-li" v-for="item of Cc" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
                   {{ item[addressOptions.suffix] }}
                 </label>
-                <i class="address-list-del" @click="clearList(1, item[node_key])">x</i>
+                <i class="address-list-del el-icon-delete" @click="clearList(1, item[node_key])"></i>
               </li>
             </ul>
           </div>
@@ -281,13 +281,13 @@
               class="filter-tree"
             ></el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of selfMsr" :key="item[node_key]">
+              <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
                   {{ item[addressOptions.suffix] }}
                 </label>
-                <i class="address-list-del" @click="clearList(2, item[node_key])">x</i>
+                <i class="address-list-del el-icon-delete" @click="clearList(2, item[node_key])"></i>
               </li>
             </ul>
           </div>
@@ -302,9 +302,24 @@ import { arrayToTree } from "wl-core";
 export default {
   name: "WlTransferTree",
   props: {
-    sjr: Array,
-    csr: Array,
-    msr: Array,
+     sjr: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    csr: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    msr: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
     // 宽度
     width: {
       type: String,
@@ -456,7 +471,6 @@ export default {
       shang_img_src: require("../../assets/images/shang.png")
     };
   },
-
   created() {
     this.from_check_keys = this.defaultCheckedKeys;
     this.from_expanded_keys = this.defaultExpandedKeys;
@@ -1066,7 +1080,28 @@ export default {
       this.from_expanded_keys = [..._form];
       let _to = new Set(this.to_expanded_keys.concat(val));
       this.to_expanded_keys = [..._to];
-    }
+    },
+    // 收件人默认值监测
+    sjr: {
+      handler(val) {
+        this.addressee.push(...val);
+      },
+      immediate: true,
+    },
+    // 抄送人默认值监测
+    csr: {
+      handler(val) {
+        this.Cc.push(...val);
+      },
+      immediate: true,
+    },
+    // 密送人默认值监测
+    msr: {
+      handler(val) {
+        this.secret_receiver.push(...val);
+      },
+      immediate: true,
+    },
   }
 };
 </script>
