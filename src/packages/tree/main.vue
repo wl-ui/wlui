@@ -40,21 +40,28 @@
             size="small"
             v-loading="load.nodeChange"
             v-model="data[selfProps.label]"
-            @change="nodeChange($event,data,node)"
+            @change="nodeChange($event, data, node)"
             placeholder="请输入节点名称"
           ></el-input>
         </div>
-        <div v-else class="wl-tree-node" slot-scope="{ node, data }" :ref="data[nodeKey]">
+        <div
+          v-else
+          class="wl-tree-node"
+          slot-scope="{ node, data }"
+          :ref="data[nodeKey]"
+        >
           <template>
             <div class="tree-label-box">{{ node.label }}</div>
             <div class="tree-icon-box">
               <el-dropdown
-                v-if="node.level ===1"
+                v-if="node.level === 1"
                 trigger="click"
                 placement="bottom"
                 @command="handleTreeCommand($event, data)"
               >
-                <i class="el-icon-circle-plus-outline handle-tree-icon color-blue"></i>
+                <i
+                  class="el-icon-circle-plus-outline handle-tree-icon color-blue"
+                ></i>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="next">同级</el-dropdown-item>
                   <el-dropdown-item command="child">子级</el-dropdown-item>
@@ -105,32 +112,32 @@ export default {
     data: Array, // 数据
     nodeKey: {
       type: String,
-      default: "id"
+      default: "id",
     }, // node-key
     editable: {
       type: Boolean,
-      default: false
+      default: false,
     }, // 是否可编辑
     expandOnClickNode: {
       type: Boolean,
-      default: true
+      default: true,
     }, // 点击节点展开
     defaultExpandAll: {
       type: Boolean,
-      default: false
+      default: false,
     }, // 是否默认展开全部
     defaultExpandedKeys: Array, // 默认展开节点
     props: Object, // 配置项
-    filterNodeMethod: Function // 自定义筛选函数
+    filterNodeMethod: Function, // 自定义筛选函数
   },
   data() {
     return {
       load: {
         nodeChange: false,
-        nodeDel: null
+        nodeDel: null,
       }, // load管理
       hasAddNow: false, // 现在是否存在新增节点
-      loadingInstance: null
+      loadingInstance: null,
     };
   },
   computed: {
@@ -141,9 +148,9 @@ export default {
         disabled: "disabled",
         isLeaf: "isLeaf",
         isEdit: "isEdit",
-        ...this.props
+        ...this.props,
       };
-    }
+    },
   },
   methods: {
     /**
@@ -163,7 +170,7 @@ export default {
       if (this.hasAddNow) {
         this.$message({
           type: "warning",
-          message: "当前存在一个未提交新增节点,请提交后再创建"
+          message: "当前存在一个未提交新增节点,请提交后再创建",
         });
         return;
       }
@@ -171,7 +178,7 @@ export default {
         [this.nodeKey]: "a-new-node",
         [this.selfProps.label]: "",
         [this.selfProps.children]: [],
-        isEdit: true
+        isEdit: true,
       };
       this.hasAddNow = true;
       this.append(newNode, data);
@@ -190,10 +197,17 @@ export default {
      * @param {Object} node 节点对应的 Node
      */
     nodeChange(val, data, node) {
+      if (!val) {
+        this.$message({
+          type: "warning",
+          message: "请输入节点名！",
+        });
+        return;
+      }
       this.load.nodeChange = true;
       const _info = {
         data,
-        node
+        node,
       };
       this.$emit("node-change", val, _info, () => {
         this.load.nodeChange = false;
@@ -210,7 +224,7 @@ export default {
           this.load.nodeDel = this.$loading({
             spinner: "el-icon-loading",
             background: "rgba(0, 0, 0, 0.7)",
-            target: this.$refs[data[this.nodeKey]]
+            target: this.$refs[data[this.nodeKey]],
           });
 
           this.$emit("node-del", data, this.remove);
@@ -248,11 +262,10 @@ export default {
     // 筛选
     filter(val) {
       this.$refs["wl-tree"].filter(val);
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss">
-
 </style>
