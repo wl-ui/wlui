@@ -22,68 +22,76 @@
           <slot :node="node" :data="data"></slot>
         </template>
       </el-tree>
-      <el-tree
-        ref="wl-tree"
-        v-else
-        :data="data"
-        :props="selfProps"
-        :node-key="nodeKey"
-        :default-expand-all="defaultExpandAll"
-        :filter-node-method="filterNodeMethod"
-        :expand-on-click-node="expandOnClickNode"
-        :default-expanded-keys="defaultExpandedKeys"
-        @current-change="handleCurrentChange"
-        @node-click="handleNodeClick"
-      >
-        <div slot-scope="{ node, data }" v-if="data.isEdit">
-          <el-input
-            size="small"
-            v-loading="load.nodeChange"
-            v-model="data[selfProps.label]"
-            @change="nodeChange($event, data, node)"
-            placeholder="请输入节点名称"
-          ></el-input>
-        </div>
-        <div
-          v-else
-          class="wl-tree-node"
-          slot-scope="{ node, data }"
-          :ref="data[nodeKey]"
+      <template v-else>
+        <el-button
+          v-if="!data.length"
+          type="primary"
+          @click="handleTreeAdd(null)"
         >
-          <template>
-            <div class="tree-label-box">{{ node.label }}</div>
-            <div class="tree-icon-box">
-              <el-dropdown
-                v-if="node.level === 1"
-                trigger="click"
-                placement="bottom"
-                @command="handleTreeCommand($event, data)"
-              >
+          {{ noDataBtn }}
+        </el-button>
+        <el-tree
+          ref="wl-tree"
+          :data="data"
+          :props="selfProps"
+          :node-key="nodeKey"
+          :default-expand-all="defaultExpandAll"
+          :filter-node-method="filterNodeMethod"
+          :expand-on-click-node="expandOnClickNode"
+          :default-expanded-keys="defaultExpandedKeys"
+          @current-change="handleCurrentChange"
+          @node-click="handleNodeClick"
+        >
+          <div slot-scope="{ node, data }" v-if="data.isEdit">
+            <el-input
+              size="small"
+              v-loading="load.nodeChange"
+              v-model="data[selfProps.label]"
+              @change="nodeChange($event, data, node)"
+              placeholder="请输入节点名称"
+            ></el-input>
+          </div>
+          <div
+            v-else
+            class="wl-tree-node"
+            slot-scope="{ node, data }"
+            :ref="data[nodeKey]"
+          >
+            <template>
+              <div class="tree-label-box">{{ node.label }}</div>
+              <div class="tree-icon-box">
+                <el-dropdown
+                  v-if="node.level === 1"
+                  trigger="click"
+                  placement="bottom"
+                  @command="handleTreeCommand($event, data)"
+                >
+                  <i
+                    class="el-icon-circle-plus-outline handle-tree-icon color-blue"
+                  ></i>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="next">同级</el-dropdown-item>
+                    <el-dropdown-item command="child">子级</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
                 <i
-                  class="el-icon-circle-plus-outline handle-tree-icon color-blue"
+                  v-else
+                  @click.stop="handleTreeAdd(data)"
+                  class="handle-tree-icon color-blue el-icon-circle-plus-outline"
                 ></i>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="next">同级</el-dropdown-item>
-                  <el-dropdown-item command="child">子级</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-              <i
-                v-else
-                @click.stop="handleTreeAdd(data)"
-                class="handle-tree-icon color-blue el-icon-circle-plus-outline"
-              ></i>
-              <i
-                @click.stop="handleTreeEdit(data)"
-                class="handle-tree-icon color-blue el-icon-edit-outline"
-              ></i>
-              <i
-                @click.stop="handleTreeDel(data)"
-                class="handle-tree-icon color-red el-icon-delete"
-              ></i>
-            </div>
-          </template>
-        </div>
-      </el-tree>
+                <i
+                  @click.stop="handleTreeEdit(data)"
+                  class="handle-tree-icon color-blue el-icon-edit-outline"
+                ></i>
+                <i
+                  @click.stop="handleTreeDel(data)"
+                  class="handle-tree-icon color-red el-icon-delete"
+                ></i>
+              </div>
+            </template>
+          </div>
+        </el-tree>
+      </template>
     </ft-scroll>
   </div>
 </template>
@@ -129,6 +137,10 @@ export default {
     defaultExpandedKeys: Array, // 默认展开节点
     props: Object, // 配置项
     filterNodeMethod: Function, // 自定义筛选函数
+    noDataBtn: {
+      type: String,
+      default: "新增",
+    }, // 无数据时的新增按钮名
   },
   data() {
     return {
@@ -249,7 +261,7 @@ export default {
     // 移除某个节点
     remove(data) {
       this.load.nodeDel?.close?.();
-      this.$refs["wl-tree"].remove(data);
+      data && this.$refs["wl-tree"].remove(data);
     },
     // 根据 data 或者 key 拿到 Tree 组件中的 nod
     getNode(data) {
