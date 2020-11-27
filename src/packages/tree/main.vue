@@ -1,13 +1,13 @@
 <template>
-  <div class="wl-tree border">
+  <div class="ft-tree border">
     <!-- 头部自定义区 -->
     <div>
       <slot name="top"></slot>
     </div>
     <!-- 主体树 -->
-    <ft-scroll class="wl-tree-body">
+    <ft-scroll class="ft-tree-body">
       <el-tree
-        ref="wl-tree"
+        ref="ft-tree"
         v-if="!editable"
         :data="data"
         :props="selfProps"
@@ -24,21 +24,22 @@
       </el-tree>
       <template v-else>
         <el-button
-          v-if="!data.length"
+          v-if="!selfData.length"
           type="primary"
           @click="handleTreeAdd(null)"
         >
           {{ noDataBtn }}
         </el-button>
         <el-tree
-          ref="wl-tree"
-          :data="data"
+          ref="ft-tree"
+          :data="selfData"
           :props="selfProps"
           :node-key="nodeKey"
           :default-expand-all="defaultExpandAll"
           :filter-node-method="filterNodeMethod"
+          :render-after-expand="renderAfterExpand"
           :expand-on-click-node="expandOnClickNode"
-          :default-expanded-keys="defaultExpandedKeys"
+          :default-expanded-keys="selfDefaultExpandedKeys"
           @current-change="handleCurrentChange"
           @node-click="handleNodeClick"
         >
@@ -53,7 +54,7 @@
           </div>
           <div
             v-else
-            class="wl-tree-node"
+            class="ft-tree-node"
             slot-scope="{ node, data }"
             :ref="data[nodeKey]"
           >
@@ -115,7 +116,7 @@
  * @emits el-tree提供的事件
  */
 export default {
-  name: "WlTree",
+  name: "ft-tree",
   props: {
     data: Array, // 数据
     nodeKey: {
@@ -141,6 +142,10 @@ export default {
       type: String,
       default: "新增",
     }, // 无数据时的新增按钮名
+    renderAfterExpand: {
+      type: Boolean,
+      default: true,
+    }, // 是否在第一次展开某个树节点后才渲染其子节点
   },
   data() {
     return {
@@ -150,9 +155,12 @@ export default {
       }, // load管理
       hasAddNow: false, // 现在是否存在新增节点
       loadingInstance: null,
+      expandedKey: "", // 要展开的节点
+      addData: [], // 新增的根节点
     };
   },
   computed: {
+    // 默认字段
     selfProps() {
       return {
         label: "name",
@@ -162,6 +170,20 @@ export default {
         isEdit: "isEdit",
         ...this.props,
       };
+    },
+    // 设置默认展开节点
+    selfDefaultExpandedKeys() {
+      return [...this.defaultExpandedKeys, this.expandedKey];
+    },
+    // 动态监听数据
+    selfData() {
+      return [...this.data, ...this.addData];
+    },
+  },
+  watch: {
+    // 监听到外部传入data发生变化，情况内部data
+    data() {
+      this.addData = [];
     },
   },
   methods: {
@@ -176,9 +198,9 @@ export default {
     },
     /**
      * @name 添加下级节点
-     * @param {Object} data 父级数据
+     * @param {Object} parent_data 父级数据
      */
-    handleTreeAdd(data) {
+    handleTreeAdd(parent_data) {
       if (this.hasAddNow) {
         this.$message({
           type: "warning",
@@ -186,14 +208,17 @@ export default {
         });
         return;
       }
+      const newKey = "a-new-node";
       const newNode = {
-        [this.nodeKey]: "a-new-node",
+        [this.nodeKey]: newKey,
         [this.selfProps.label]: "",
         [this.selfProps.children]: [],
         isEdit: true,
       };
       this.hasAddNow = true;
-      this.append(newNode, data);
+      this.appendData(newNode, parent_data);
+      this.expandedKey = newKey;
+      this.$refs["ft-tree"].setCurrentKey(newKey);
     },
     /**
      * @name 编辑当前节点
@@ -243,6 +268,21 @@ export default {
         })
         .catch();
     },
+    /**
+     * @name 用数据的方法添加一个节点
+     * @param {Object} newNode 新节点数据
+     * @param {Object} parent_data 父节点数据
+     */
+    appendData(newNode, parent_data) {
+      if (parent_data) {
+        let new_children = Array.isArray(parent_data[this.selfProps.children])
+          ? [...parent_data[this.selfProps.children], newNode]
+          : [newNode];
+        this.$set(parent_data, this.selfProps.children, new_children);
+      } else {
+        this.addData.push(newNode);
+      }
+    },
     // 节点点击 -------------------------------------------------事件---------------------------------------
     handleNodeClick(data, node, event) {
       this.$emit("node-click", data, node, event);
@@ -253,31 +293,76 @@ export default {
     },
     // 设置某个节点的当前选中状态 ------------------------------------------方法-----------------------------
     setCurrentNode(node) {
-      this.$refs["wl-tree"].setCurrentNode(node);
+      this.$refs["ft-tree"].setCurrentNode(node);
     },
     setCurrentKey(key) {
-      this.$refs["wl-tree"].setCurrentKey(key);
+      this.$refs["ft-tree"].setCurrentKey(key);
     },
     // 移除某个节点
     remove(data) {
       this.load.nodeDel?.close?.();
-      data && this.$refs["wl-tree"].remove(data);
+      data && this.$refs["ft-tree"].remove(data);
     },
     // 根据 data 或者 key 拿到 Tree 组件中的 nod
     getNode(data) {
-      return this.$refs["wl-tree"].getNode(data);
+      return this.$refs["ft-tree"].getNode(data);
     },
     // 为 Tree 中的一个节点追加一个子节点
     append(data, parentNode) {
-      this.$refs["wl-tree"].append(data, parentNode);
+      this.$refs["ft-tree"].append(data, parentNode);
     },
     // 筛选
     filter(val) {
-      this.$refs["wl-tree"].filter(val);
+      this.$refs["ft-tree"].filter(val);
     },
   },
 };
 </script>
 
 <style lang="scss">
+.ft-tree {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 260px;
+  padding: 10px;
+  box-sizing: border-box;
+
+  .el-tree {
+    background: transparent;
+  }
+  .el-tree-node__content {
+    height: 36px;
+    line-height: 36px;
+  }
+
+  .ft-tree-node {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 24px);
+    .tree-label-box {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: calc(100% - 66px);
+    }
+    &:hover .tree-icon-box {
+      display: flex;
+      width: 66px;
+    }
+  }
+
+  .tree-icon-box {
+    display: none;
+    justify-content: space-between;
+    padding-right: 6px;
+    width: 66px;
+    transition: all 0.3s;
+  }
+
+  .handle-tree-icon {
+    line-height: 36px;
+    font-size: 16px;
+  }
+}
 </style>
