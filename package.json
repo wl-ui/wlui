@@ -17,7 +17,7 @@
     "dayjs": "^1.8.28",
     "vue-video-player": "^5.0.2",
     "vuedraggable": "^2.24.2",
-    "wl-core": "^1.1.5",
+    "wl-core": "^1.1.8",
     "wl-http": "^1.1.2"
   },
   "devDependencies": {

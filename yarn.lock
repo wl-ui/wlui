@@ -10077,10 +10077,10 @@ wl-core@^1.0.0, wl-core@^1.1.3:
     big.js "^5.2.2"
     dayjs "^1.8.25"
 
-wl-core@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/wl-core/-/wl-core-1.1.5.tgz#7f7256f51394a9f962b0ba946588ed306b47b457"
-  integrity sha512-aMSDKCPcLOEZgQxZRRPa1kvON5LNT9qDyTnkR1SH5rEVjf+aFBW6na/9syKVNV3rZU43fyvOHg1UKOQNKQEQRg==
+wl-core@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/wl-core/-/wl-core-1.1.8.tgz#a009899a505497bbafc1f9caea7117b4def03b45"
+  integrity sha512-ZzDtSWY0dTPBaEr3M892nRTwG4mMiU5xXJG6cnadQAuH6wzs5yRjsdQiatQt36qfUMwgi4fbU3BOQFN0CH5lCQ==
   dependencies:
     big.js "^5.2.2"
     dayjs "^1.8.25"

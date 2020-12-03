@@ -885,6 +885,7 @@ export default {
         pathConnector: "\\", // String 路径父子数据拼接连接符,默认为'\'
         pathParents: "parents", // String 路径数据所有直系祖先节点自增长identityId逗号拼接
         pathIdentityId: "identityId", // String 路径数据自增长id
+        rootPidVal: undefined, // 自定义allPath数据根节点pid的值
         ...this.props
       };
     },
@@ -947,7 +948,8 @@ export default {
       let options = {
         id: this.selfProps.pathId,
         pid: this.selfProps.pathPid,
-        children: this.selfProps.pathChildren
+        children: this.selfProps.pathChildren,
+        rootPidVal: this.selfProps.rootPidVal
       };
       this.tree_path = arrayToTree(val || [], options);
     }
