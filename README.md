@@ -33,12 +33,12 @@ Vue.use(WeilanUi)
 > 按需引入
 ```js
 import {
-  Gantt, 
-  Explorer, 
-  BimViewer, 
-  TransferTree, 
-  FormDesigner
-  FormParser
+  Gantt, // 甘特图
+  Explorer, // 文件管理器
+  BimViewer, // bim三维模型预览
+  TransferTree, // 树形穿梭框
+  FormDesigner, // 表单设计器
+  FormParser, // 表单解释器
   Container, 
   ContextMenu, 
   FadeIn, 
@@ -47,7 +47,7 @@ import {
   Add, 
   Input, 
   Select, 
-  SelectTree, 
+  SelectTree, // 树形下拉框
   Tree, 
   Table, 
   TableDynamic, 

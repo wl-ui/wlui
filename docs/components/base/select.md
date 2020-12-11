@@ -116,6 +116,7 @@ export default {
   {name:'showTotal', des:' 当可选项大于多少个时显示`全选`选', type: 'Number', optionValues:'-', defaultValue: 1},
   {name:'valueKey', des:' 当绑定值为对象时需要valueKey', type: 'String', optionValues:'-', defaultValue: '-'},
   {name:'multiple', des:' 是否多选', type: 'Boolean', optionValues:'-', defaultValue: 'false'},
+  {name:'multipleLimit', des:' 可选数量，为 0 则不限制', type: 'Number', optionValues:'-', defaultValue: '0'},
   {name:'disabled', des:' 是否禁用', type: 'Boolean', optionValues:'-', defaultValue: 'false'},
   {name:'no-checked-close', des:'点击tag标签清空已选时，可选项列表将同时关闭', type: 'Boolean', optionValues:'-', defaultValue:'false'},
   {name:'-', des:'其他el-select属性', type: '-', optionValues:'-', defaultValue:'-'}
@@ -123,4 +124,4 @@ export default {
 
 <common-api type="events" :data="[
   {name:'change', des:'数据值改变', params: '目前的选中值'}
-]"></common-api>
+]"></common-api> 
