@@ -23,11 +23,7 @@
         </template>
       </el-tree>
       <template v-else>
-        <el-button
-          v-if="!selfData.length"
-          type="primary"
-          @click="handleTreeAdd(null)"
-        >
+        <el-button v-if="!selfData.length" type="primary" @click="handleTreeAdd(null)">
           {{ noDataBtn }}
         </el-button>
         <el-tree
@@ -45,10 +41,12 @@
         >
           <div slot-scope="{ node, data }" v-if="data.isEdit">
             <el-input
+              clearable
               size="small"
               v-loading="load.nodeChange"
               v-model="data[selfProps.label]"
               @change="nodeChange($event, data, node)"
+              @blur="nodeBlur($event, data)"
               placeholder="请输入节点名称"
             ></el-input>
           </div>
@@ -67,9 +65,7 @@
                   placement="bottom"
                   @command="handleTreeCommand($event, data)"
                 >
-                  <i
-                    class="el-icon-circle-plus-outline handle-tree-icon color-blue"
-                  ></i>
+                  <i class="el-icon-circle-plus-outline handle-tree-icon color-blue"></i>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="next">同级</el-dropdown-item>
                     <el-dropdown-item command="child">子级</el-dropdown-item>
@@ -116,7 +112,7 @@
  * @emits el-tree提供的事件
  */
 export default {
-  name: "ft-tree",
+  name: "WlTree",
   props: {
     data: Array, // 数据
     nodeKey: {
@@ -157,6 +153,7 @@ export default {
       loadingInstance: null,
       expandedKey: "", // 要展开的节点
       addData: [], // 新增的根节点
+      nodeKeyVal: "a-new-node", // 新增时默认节点id值
     };
   },
   computed: {
@@ -208,24 +205,26 @@ export default {
         });
         return;
       }
-      const newKey = "a-new-node";
       const newNode = {
-        [this.nodeKey]: newKey,
+        [this.nodeKey]: this.nodeKeyVal,
         [this.selfProps.label]: "",
         [this.selfProps.children]: [],
         isEdit: true,
       };
       this.hasAddNow = true;
       this.appendData(newNode, parent_data);
-      this.expandedKey = newKey;
-      this.$refs["ft-tree"].setCurrentKey(newKey);
+      this.expandedKey = this.nodeKeyVal;
+      this.$refs["ft-tree"].setCurrentKey(this.nodeKeyVal);
+      this.focus();
     },
     /**
      * @name 编辑当前节点
      * @param {Object} data 当前节点数据
      */
     handleTreeEdit(data) {
+      this.$set(data, "_name", data[this.selfProps.label]);
       this.$set(data, this.selfProps.isEdit, true);
+      this.focus();
     },
     /**
      * @name 节点修改提交
@@ -234,6 +233,7 @@ export default {
      * @param {Object} node 节点对应的 Node
      */
     nodeChange(val, data, node) {
+      // 编辑时不允许无输入值
       if (!val) {
         this.$message({
           type: "warning",
@@ -241,6 +241,7 @@ export default {
         });
         return;
       }
+      // 正常提交
       this.load.nodeChange = true;
       const _info = {
         data,
@@ -250,6 +251,24 @@ export default {
         this.load.nodeChange = false;
         this.hasAddNow = false;
       });
+    },
+    /**
+     * @name 补充change监听不到新增时不填写内容和编辑时不更改内容的缺陷
+     * @param {Object} event 元素内容
+     * @param {Object} data 节点数据
+     */
+    nodeBlur(event, data) {
+      const val = event.target.value;
+      // 新增时无输入值视为取消
+      if (!val && data[this.nodeKey] == this.nodeKeyVal) {
+        this.remove({ [this.nodeKey]: this.nodeKeyVal });
+        this.hasAddNow = false;
+      }
+      // 有值但是无改动时只切换视图不触发提交
+      if (val === data._name) {
+        this.$set(data, this.selfProps.isEdit, false);
+        return;
+      }
     },
     /**
      * @name 删除节点
@@ -314,6 +333,12 @@ export default {
     // 筛选
     filter(val) {
       this.$refs["ft-tree"].filter(val);
+    },
+    // 使输入框获得焦点
+    focus() {
+      this.$nextTick(() => {
+        this.$refs["wl-input"].focus();
+      });
     },
   },
 };

@@ -50,7 +50,11 @@
         </el-col>
         <el-col :span="9">
           <h3>树穿梭框</h3>
-          <wl-transfer-tree class="width-460"></wl-transfer-tree>
+          <wl-transfer-tree
+            class="width-460"
+            :from_data="fromData"
+            :defaultProps="defaultProps"
+          ></wl-transfer-tree>
         </el-col>
         <el-col :span="9">
           <h3>动态表格</h3>
@@ -58,11 +62,7 @@
         </el-col>
         <el-col :span="24">
           <h3>BIM模型</h3>
-          <wl-bim-viewer
-            multiple
-            :docs="bims"
-            class="wl-viewer"
-          ></wl-bim-viewer>
+          <wl-bim-viewer multiple :docs="bims" class="wl-viewer"></wl-bim-viewer>
         </el-col>
         <el-col :span="24">
           <h3>Gantt甘特图</h3>
@@ -138,9 +138,7 @@
                   @btn="submitFolderFrom('folder_form')"
                   :status="load.folder"
                 ></submit-btn>
-                <el-button size="medium" @click="fade.folder = false"
-                  >取消</el-button
-                >
+                <el-button size="medium" @click="fade.folder = false">取消</el-button>
               </div>
             </fade-in>
           </wl-explorer>
@@ -151,12 +149,8 @@
         biubiubiu~
         <template #footer>
           <div>
-            <el-button size="small" @click="layout.fade = false"
-              >取 消</el-button
-            >
-            <el-button size="small" @click="layout.fade = false"
-              >确 定</el-button
-            >
+            <el-button size="small" @click="layout.fade = false">取 消</el-button>
+            <el-button size="small" @click="layout.fade = false">确 定</el-button>
           </div>
         </template>
       </wl-fade-in>
@@ -187,6 +181,80 @@ export default {
         fade: false,
         contextmenu: false,
       },
+      // ----------------------------------------------------transfer
+      defaultProps: {
+        label: "name",
+        children: "children",
+        disabled(data) {
+          return data.id === 2;
+        },
+      },
+      fromData: [
+        {
+          id: 1,
+          pid: 0,
+          name: "测试左侧",
+          children: [
+            {
+              id: 2,
+              pid: 1,
+              name: "水电费是打发斯蒂芬斯蒂芬gas噶水电费噶地方死光光",
+              children: [],
+            },
+            {
+              id: 3,
+              pid: 1,
+              name: "11-3",
+              children: [],
+            },
+            {
+              id: 4,
+              pid: 1,
+              name: "11-4",
+              children: [
+                {
+                  id: 5,
+                  pid: 4,
+                  name: "11-5",
+                  children: [
+                    {
+                      id: 111,
+                      pid: 5,
+                      name: "11-111",
+                    },
+                  ],
+                },
+                {
+                  id: 6,
+                  pid: 4,
+                  name: "11-6",
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 7127,
+          pid: 0,
+          name: "debug",
+          children: [
+            {
+              id: 71272,
+              pid: 7127,
+              name: "debug22",
+              // disabled: true,
+              children: [],
+            },
+            {
+              id: 71273,
+              pid: 7127,
+              name: "debug11",
+              children: [],
+            },
+          ],
+        },
+      ], // 穿梭框 - 源数据 - 树形
       // ---------------------------------------------select tree
       treeData: [
         {
@@ -255,14 +323,12 @@ export default {
         },
         {
           name: "urn_model5",
-          path:
-            "http://wlui.oss-cn-beijing.aliyuncs.com/bimdata/demo5/Sphere.svf",
+          path: "http://wlui.oss-cn-beijing.aliyuncs.com/bimdata/demo5/Sphere.svf",
           modelObj: null,
         },
         {
           name: "urn_model6",
-          path:
-            "http://wlui.oss-cn-beijing.aliyuncs.com/bimdata/demo5/Sphere.svf",
+          path: "http://wlui.oss-cn-beijing.aliyuncs.com/bimdata/demo5/Sphere.svf",
           modelObj: null,
         },
       ],
@@ -437,9 +503,7 @@ export default {
         Describe: "",
       }, // 文件夹表单
       folder_rules: {
-        Name: [
-          { required: true, message: "请填写文件夹名称", trigger: "blur" },
-        ],
+        Name: [{ required: true, message: "请填写文件夹名称", trigger: "blur" }],
       }, // 文件夹表单验证
       child_act_saved: {}, // 存储子组件数据，用于编辑更新
       tree_select_prop: {
@@ -462,9 +526,7 @@ export default {
     handleContextmenu(event) {
       event.preventDefault();
       event.stopPropagation();
-      this.contextmenu.tag = event.target
-        .getAttribute("aria-controls")
-        ?.slice(5);
+      this.contextmenu.tag = event.target.getAttribute("aria-controls")?.slice(5);
       this.contextmenu.x = event.clientX;
       this.contextmenu.y = event.clientY;
       this.layout.contextmenu = true;
@@ -623,8 +685,7 @@ export default {
           customClass: "mulit-msg",
         });
       }
-      if (normal_data_folder.length === 0 && normal_data_file.length === 0)
-        return;
+      if (normal_data_folder.length === 0 && normal_data_file.length === 0) return;
       // 可删除数据正常删除
       let _data = {
         FolderIds: normal_data_folder,
