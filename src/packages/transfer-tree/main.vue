@@ -1,6 +1,31 @@
 <template>
   <div class="wl-transfer transfer" :style="{ width, height }">
-    <component :is="isComponent" v-bind="$props"></component>
+    <component :is="isComponent" v-bind="$props">
+      <template #left-footer>
+        <slot name="left-footer"></slot>
+      </template>
+      <template #right-footer>
+        <slot name="right-footer"></slot>
+      </template>
+      <template #title-left>
+        <slot name="title-left"></slot>
+      </template>
+      <template #title-right>
+        <slot name="title-right"></slot>
+      </template>
+      <template #from>
+        <slot name="from"></slot>
+      </template>
+      <template #to>
+        <slot name="to"></slot>
+      </template>
+      <template #content-left="{ node, data }">
+        <slot name="content-left" :node="node" :data="data"></slot>
+      </template>
+      <template #content-right="{ node, data }">
+        <slot name="content-right" :node="node" :data="data"></slot>
+      </template>
+    </component>
   </div>
 </template>
 
@@ -182,6 +207,5 @@ export default {
 </script>
 
 <style scoped>
-@import "~@/assets/css/base/clear.min.css";
 @import "~@/assets/css/transfer-tree/index.min.css";
 </style>

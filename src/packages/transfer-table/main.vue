@@ -1,11 +1,5 @@
 <template>
-  <el-row
-    class="wl-transfer-table"
-    type="flex"
-    justify="space-around"
-    :gutter="20"
-    v-if="show"
-  >
+  <el-row class="wl-transfer-table" type="flex" justify="space-around" :gutter="20">
     <el-col :span="colSpan[0]" class="transfer-table-span">
       <!-- 左侧上部slot -->
       <slot name="header-left"></slot>
@@ -19,15 +13,9 @@
         :row-key="rowKey"
         :has-index="false"
         :columns="leftColumns"
-        :pageSize="10"
-        :total="selfPage.total"
         :selectable="selectable"
         :reserve-selection="true"
-        :page-size="selfPage.size"
-        :page-num="selfPage.index"
         :defaultChecked="selfDefaultChecked"
-        @current-change="currentPageChanged"
-        @size-change="selfSizeChange"
         @select-all="AllSelect"
         @select="rowSelect"
       >
