@@ -52,7 +52,12 @@ export default {
     multiple: {
       type: Boolean,
       default: false
-    }
+    },
+    // 是否开启docs变化，清理之前的模型然后重新加载新模型
+    changeClean: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -79,6 +84,11 @@ export default {
       };
     }
   },
+  watch: {
+    modelArray() {
+      this.changeClean && this.reloadModel();
+    },
+  },
   mounted() {
     this.init = true;
     this.timer = setInterval(() => {
@@ -86,7 +96,7 @@ export default {
         clearInterval(this.timer);
         let mat = new window.THREE.Matrix4();
         this.load_options = {
-          placementTransform: mat
+          placementTransform: mat,
         };
         this.initViewer();
       }
@@ -105,7 +115,7 @@ export default {
       let options = {
         env: "Local",
         offline: "true",
-        useADP: false
+        useADP: false,
       };
       let self = this;
       // 初始化
@@ -113,10 +123,7 @@ export default {
         //get the viewer div
         let viewerDiv = document.getElementById("wl-viewer-box");
         //initialize the viewer object
-        self.viewer = new window.Autodesk.Viewing.Private.GuiViewer3D(
-          viewerDiv,
-          {}
-        );
+        self.viewer = new window.Autodesk.Viewing.Private.GuiViewer3D(viewerDiv, {});
 
         // 初始化回调
         self.$emit("init", self.viewer);
@@ -133,7 +140,7 @@ export default {
         // 多模型选择构建事件监听
         self.viewer.addEventListener(
           window.Autodesk.Viewing.AGGREGATE_SELECTION_CHANGED_EVENT,
-          function(event) {
+          function (event) {
             /* let color = new THREE.Vector4(0, 0.5, 0, 1);
             let id = event.selections[0].dbIdArray[0];
             self.viewer.setThemingColor(id, color); */
@@ -158,7 +165,7 @@ export default {
         // 摄像头变化事件
         self.viewer.addEventListener(
           window.Autodesk.Viewing.CAMERA_CHANGE_EVENT,
-          function(rvt) {
+          function (rvt) {
             self.$emit("cameraMove", rvt);
 
             //find out all pushpin markups
@@ -204,24 +211,10 @@ export default {
      * index 模型索引
      */
     loadModel(item = {}, index = 0, successCb, errorCb) {
-      let _options = Object.assign(
-        {},
-        this.load_options,
-        item[this.selfProps.options]
-      );
+      let _options = Object.assign({}, this.load_options, item[this.selfProps.options]);
       index === 0
-        ? this.viewer.start(
-            item[this.selfProps.path],
-            _options,
-            successCb,
-            errorCb
-          )
-        : this.viewer.loadModel(
-            item[this.selfProps.path],
-            _options,
-            successCb,
-            errorCb
-          );
+        ? this.viewer.start(item[this.selfProps.path], _options, successCb, errorCb)
+        : this.viewer.loadModel(item[this.selfProps.path], _options, successCb, errorCb);
     },
     // 有序加载
     orderLoading() {
@@ -230,11 +223,11 @@ export default {
       );
       // 调用队列加载
       this.processArray(index_arr, this.promiseEachModel).then(
-        result => {
+        (result) => {
           //全部加载完成
           this.$emit("successAll", result);
         },
-        reason => {
+        (reason) => {
           this.$emit("errorAll", reason);
         }
       );
@@ -318,9 +311,7 @@ export default {
 
         // 加载失败回调
         function _onLoadModelError(viewerErrorCode) {
-          console.error(
-            modelName + ": Load Model Error, errorCode:" + viewerErrorCode
-          );
+          console.error(modelName + ": Load Model Error, errorCode:" + viewerErrorCode);
           self.$emit("error", modelName, viewerErrorCode);
           self.init = false;
           //any error
@@ -332,9 +323,9 @@ export default {
     // 队列调用
     processArray(array, fn) {
       let results = [];
-      return array.reduce(function(p, item) {
-        return p.then(function() {
-          return fn(item).then(function(data) {
+      return array.reduce(function (p, item) {
+        return p.then(function () {
+          return fn(item).then(function (data) {
             results.push(data);
             return results;
           });
@@ -360,6 +351,7 @@ export default {
     // 卸载model
     unloadModel(model) {
       this.viewer.impl.unloadModel(model || this.viewer.model);
+      return Promise.resolve();
     },
     // 卸载viewer
     uploadViewer() {
@@ -372,9 +364,16 @@ export default {
     getModelInfo() {
       return {
         viewer: this.viewer,
-        models: this.db
+        models: this.db,
       };
-    }
+    },
+    // 重启模型
+    reloadModel() {
+      this.init = true;
+      this.unloadModel().then(() => {
+        this.initViewer();
+      });
+    },
   }
 };
 </script>
