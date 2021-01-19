@@ -29,6 +29,7 @@
           :filter-node-method="filterNode"
           :default-checked-keys="checked_keys"
           :default-expand-all="defaultExpandAll"
+          :check-on-click-node="checkOnClickNode"
           :expand-on-click-node="expandOnClickNode"
           :default-expanded-keys="defaultExpandedKeys"
           @check="handleCheckChange"
@@ -206,6 +207,11 @@ export default {
     },
     // 是否点击节点展开收缩
     expandOnClickNode: {
+      type: Boolean,
+      default: false,
+    },
+    // 是否点击节点选中复选框
+    checkOnClickNode: {
       type: Boolean,
       default: false,
     },
