@@ -50,7 +50,7 @@ import WlTable from "../table";
 import { differenceBy } from "lodash";
 
 export default {
-  name: "table-transfer",
+  name: "WlTransferTable",
   components: { WlTable },
   props: {
     rowKey: {
