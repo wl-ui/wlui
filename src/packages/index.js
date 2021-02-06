@@ -16,6 +16,7 @@ import Gantt from "./gantt";
 import Tree from "./tree";
 import FormDesigner from "./form-designer";
 import FormParser from "./form-parser";
+import "@/assets/base/clear.min.css"
 
 const components = [Select, SelectTree, TransferTree, Address, Add, Input, Container, ContextMenu, FadeIn, Scroll, Table, TableDynamic, BimViewer, Explorer, Gantt, Tree, FormDesigner, FormParser];
 

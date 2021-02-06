@@ -1721,6 +1721,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/assets/css/base/clear.min.css";
 @import "~@/assets/css/gantt/index.min.css";
 </style>

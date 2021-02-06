@@ -379,6 +379,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/assets/css/base/clear.min.css";
 @import "~@/assets/css/bim-viewer/index.min.css";
 </style>

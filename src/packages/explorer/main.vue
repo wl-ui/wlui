@@ -963,7 +963,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/assets/css/base/clear.min.css";
 @import "~@/assets/css/explorer/index.min.css";
 @import "~@/assets/icons/iconfont.css";
 </style>

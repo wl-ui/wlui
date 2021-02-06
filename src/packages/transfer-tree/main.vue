@@ -1,9 +1,9 @@
 <template>
   <div class="wl-transfer transfer" :style="{ width, height }">
     <component
-      :is="isComponent"
-      v-bind="$props"
       ref="wl-transfer-component"
+      v-bind="$props"
+      :is="isComponent"
       @add-btn="handleAddBtn"
       @remove-btn="handleRemoveBtn"
       @left-check-change="handleLeftCheckChange"
