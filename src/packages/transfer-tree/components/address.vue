@@ -644,7 +644,7 @@ export default {
      * @name 清空选中节点
      * @param {String} type left左边 right右边 all全部 默认all
      */
-    clearChecked(type = "all") {
+    clearChecked() {
       this.$refs["from-tree"].setCheckedKeys([]);
       this.from_is_indeterminate = false;
       this.from_check_all = false;
