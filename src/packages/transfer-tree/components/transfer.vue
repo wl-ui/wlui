@@ -332,13 +332,13 @@ export default {
       from_check_all: false, // 源数据是否全选
       from_expanded_keys: [], // 源数据展开节点
       from_disabled: true, // 添加按钮是否禁用
-      from_check_keys: [], // 源数据选中key数组 以此属性关联穿梭按钮，总全选、半选状态
+      from_check_keys: [], // 源数据选中key数组，以此属性关联穿梭按钮，总全选、半选状态
       from_array_clone: [], // 左侧数据一维化后存储为json格式
       to_check_all: false, // 目标数据是否全选
       to_is_indeterminate: false, // 目标数据是否半选
       to_expanded_keys: [], // 目标数据展开节点
       to_disabled: true, // 移除按钮是否禁用
-      to_check_keys: [], // 目标数据选中key数组 以此属性关联穿梭按钮，总全选、半选状态
+      to_check_keys: [], // 目标数据选中key数组，以此属性关联穿梭按钮，总全选、半选状态
       to_array_clone: [], // 右侧数据一维化后存储为json格式
       filterFrom: "", // 源数据筛选
       filterTo: "", // 目标数据筛选
