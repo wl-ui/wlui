@@ -15,7 +15,7 @@
   "dependencies": {
     "async-validator": "1.11.5",
     "dayjs": "^1.8.28",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "vue-video-player": "^5.0.2",
     "vuedraggable": "^2.24.2",
     "wl-core": "^1.1.8",
